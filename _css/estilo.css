@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+
+nav#menu ul{
+
+list-style: none;
+
+
+}
+
+nav#menu li{
+
+width: 150px;
+height: 23px;
+text-align: center;
+padding: 5px;
+margin: 5px;
+margin-left: 48px;
+border: 1px solid black;
+background-color: rgba(0,0,0,.6);
+
+}
+
+nav#menu h1{
+
+text-align: center;
+
+
+}
+
+a{
+
+color: white;
+text-decoration: none;
+
+}
+
+a:hover{
+
+color: blue;
+
+}
+
+
+
