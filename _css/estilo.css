@@ -1,8 +1,9 @@
 @charset "UTF-8";
-/*Import da fonte (Contrail One)*/
-@import url('https://fonts.googleapis.com/css2?family=Contrail+One&display=swap');
 /*Import da fonte (Roboto)*/
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+/*Import da fonte(Cardo)*/
+@import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
+/*Import da fonte (Console2P)*/
 
 *{
     padding: 0;
@@ -25,22 +26,35 @@ body{
 
 /*Menu*/
 
-
-div#menu h1{
-    text-align: center;
-    font-family: 'Contrail One', cursive;
-    padding: 1px;
-    font-size: 23pt;
-    color: white;
-    
+div.menu img#Dama1{
+  width: 50px;
+  height: 50px;
+  position: relative;
+  top: 45px;
+  left: 0px;
+}
+div.menu img#Dama2{
+  width: 50px;
+  height: 50px;
+  position: relative;
+  top: 45px;
+  left:142px;
 }
 
-div#menu ul{
+div.menu h1{
+    text-align: center;
+    margin-right: 15px;
+    font-family: 'Cardo', serif;
+    font-size: 23pt;
+    color: white;
+}
+
+div.menu ul{
 list-style: none;
 
 }
 
-div#menu li{
+div.menu li{
 position: relative;
 width: 170px;
 height: 23px;
@@ -53,17 +67,16 @@ border-radius: 7px;
 transition: width 2s;
 font-family: Consolas;
 letter-spacing: 4px;
-
 }
 
-div#menu li:hover{
+div.menu li:hover{
 background-color:#5a94c7;
 box-shadow: 0 0 20px var(--primary-color), 0 0 80px var(--primary-color),
       0 0 160px var(--primary-color), 0 0 320px var(--primary-color);
     transition-delay: 1s;
 }
 
-div#menu li a{
+div.menu li a{
 color: #0e0b16;
 text-decoration: none;
 
@@ -80,7 +93,7 @@ text-decoration: none;
   .btn {
     position: relative;
     display: block;
-    padding: 15px 30px;
+    padding: 20px 30px;
     margin-bottom: 9px;
     color: var(--primary-color);
     text-transform: uppercase;
