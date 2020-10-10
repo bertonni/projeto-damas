@@ -15,7 +15,12 @@ body{
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: var(--bg-color);
+    background-image:radial-gradient(
+      #495158,
+      #23313a
+    );
+
+
 }
 
 /*Menu*/
@@ -37,23 +42,25 @@ list-style: none;
 
 div#menu li{
 position: relative;
-width: 150px;
+width: 170px;
 height: 23px;
 text-align: center;
 padding: 10px;
-margin-left: 48px;
+margin-left: 33px;
 margin-bottom: 9px;
-border: 2px solid #255784;
 background-color: #255784;
 border-radius: 7px;
 transition: width 2s;
+font-family: Consolas;
+letter-spacing: 4px;
 
 }
 
 div#menu li:hover{
-background-color:#2578c5;
-box-shadow: 1px 2px 3px rgb(37, 35, 35);
-transform: scale(1.1);
+background-color:#5a94c7;
+box-shadow: 0 0 20px var(--primary-color), 0 0 80px var(--primary-color),
+      0 0 160px var(--primary-color), 0 0 320px var(--primary-color);
+    transition-delay: 1s;
 }
 
 div#menu li a{
