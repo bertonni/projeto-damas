@@ -44,20 +44,20 @@ padding: 10px;
 margin-left: 48px;
 margin-bottom: 9px;
 border: 2px solid #255784;
-background-color: rgba(0,0,0);
+background-color: #255784;
 border-radius: 7px;
 transition: width 2s;
 
 }
 
 div#menu li:hover{
-background-color: rgba(41, 36, 36, 0.6);
+background-color:#2578c5;
 box-shadow: 1px 2px 3px rgb(37, 35, 35);
 transform: scale(1.1);
 }
 
 div#menu li a{
-color: white;
+color: #0e0b16;
 text-decoration: none;
 
 }
