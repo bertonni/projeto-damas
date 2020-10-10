@@ -1,49 +1,143 @@
 @charset "UTF-8";
-/*Import da fonte (Contrail One; Usada no título do Menu)*/
+/*Import da fonte (Contrail One)*/
 @import url('https://fonts.googleapis.com/css2?family=Contrail+One&display=swap');
+/*Import da fonte (Roboto)*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 *{
     padding: 0;
     margin: 0;
 }
 
-nav#menu ul{
+body{
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--bg-color);
+}
+
+/*Menu*/
+
+
+div#menu h1{
+    text-align: center;
+    font-family: 'Contrail One', cursive;
+    padding: 1px;
+    font-size: 23pt;
+    color: white;
+    
+}
+
+div#menu ul{
 list-style: none;
 
 }
 
-nav#menu li{
-
+div#menu li{
+position: relative;
 width: 150px;
 height: 23px;
 text-align: center;
-padding: 5px;
-margin: 5px;
+padding: 10px;
 margin-left: 48px;
-border: 1px solid black;
-background-color: rgba(0,0,0,.6);
+margin-bottom: 9px;
+border: 2px solid #255784;
+background-color: rgba(0,0,0);
+border-radius: 7px;
+transition: width 2s;
 
 }
 
-nav#menu h1{
-
-text-align: center;
-font-family: 'Contrail One', cursive;
-
+div#menu li:hover{
+background-color: rgba(41, 36, 36, 0.6);
+box-shadow: 1px 2px 3px rgb(37, 35, 35);
+transform: scale(1.1);
 }
 
-li a{
-
+div#menu li a{
 color: white;
 text-decoration: none;
 
 }
 
-a:hover{
+/*Botão*/
 
-color: blue;
-
-}
-
-
+:root {
+    --bg-color: #0e0b16;
+    --primary-color: #2196f3;
+    --secondary-color: #255784;
+  }
+  
+  .btn {
+    position: relative;
+    display: block;
+    padding: 15px 30px;
+    margin-bottom: 9px;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 18px;
+    text-decoration: none;
+    font-size: 36px;
+    overflow: hidden;
+    transition: 0.2s;
+  }
+  .btn:hover {
+    color: var(--secondary-color);
+    background: var(--primary-color);
+    box-shadow: 0 0 20px var(--primary-color), 0 0 80px var(--primary-color),
+      0 0 160px var(--primary-color), 0 0 320px var(--primary-color);
+    transition-delay: 1s;
+  }
+  
+  .btn span {
+    position: absolute;
+    display: block;
+  }
+  .btn span:nth-child(1) {
+    top: 0;
+    transform: translateX(-115%);
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--primary-color));
+  }
+  .btn:hover span:nth-child(1) {
+    transform: translateX(100%);
+    transition: 1s;
+  }
+  .btn span:nth-child(3) {
+    bottom: 0;
+    transform: translateX(100%);
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(270deg, transparent, var(--primary-color));
+  }
+  .btn:hover span:nth-child(3) {
+    transform: translateX(-115%);
+    transition: 1s 0.5s;
+  }
+  .btn span:nth-child(2) {
+    right: 0;
+    transform: translateY(-130%);
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, var(--primary-color));
+  }
+  .btn:hover span:nth-child(2) {
+    transform: translateY(100%);
+    transition: 1s 0.25s;
+  }
+  .btn span:nth-child(4) {
+    left: 0;
+    transform: translateY(100%);
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, var(--primary-color));
+  }
+  .btn:hover span:nth-child(4) {
+    transform: translateY(-130%);
+    transition: 1s 0.75s;
+  }
+  
 
