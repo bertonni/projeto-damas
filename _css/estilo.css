@@ -1,10 +1,14 @@
 @charset "UTF-8";
+/*Import da fonte (Contrail One; Usada no título do Menu)*/
+@import url('https://fonts.googleapis.com/css2?family=Contrail+One&display=swap');
 
+*{
+    padding: 0;
+    margin: 0;
+}
 
 nav#menu ul{
-
 list-style: none;
-
 
 }
 
@@ -24,11 +28,11 @@ background-color: rgba(0,0,0,.6);
 nav#menu h1{
 
 text-align: center;
-
+font-family: 'Contrail One', cursive;
 
 }
 
-a{
+li a{
 
 color: white;
 text-decoration: none;
