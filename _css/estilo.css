@@ -16,12 +16,7 @@ body{
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-image:radial-gradient(
-      #495158,
-      #23313a
-    );
-
-
+    background-image: linear-gradient(to left, #29323c, #485563);
 }
 
 /*Menu*/
@@ -48,6 +43,7 @@ div.menu h1{
     font-family: 'Cardo', serif;
     font-size: 33pt;
     color: white;
+    margin-bottom: 39px;
 }
 
 div.menu ul{
@@ -57,10 +53,9 @@ list-style: none;
 
 div.menu li{
 position: relative;
-width: 170px;
-height: 23px;
-text-align: center;
-padding: 10px;
+display: flex;
+width: 190px;
+height: 43px;
 margin-left: 30px;
 margin-bottom: 9px;
 background-color: #255784;
@@ -68,6 +63,7 @@ border-radius: 7px;
 transition: width 2s;
 font-family: Consolas;
 letter-spacing: 4px;
+text-align: center
 }
 
 div.menu li:hover{
@@ -80,7 +76,9 @@ box-shadow: 0 0 20px var(--primary-color), 0 0 80px var(--primary-color),
 div.menu li a{
 color: #0e0b16;
 text-decoration: none;
-
+height: 100%;
+width: 100%;
+padding: 10px;
 }
 
 /*Botão*/
@@ -128,7 +126,7 @@ text-decoration: none;
   }
   .btn:hover span:nth-child(1) {
     transform: translateX(100%);
-    transition: 1s;
+    transition: 0.73s;
   }
   .btn span:nth-child(3) {
     bottom: 0;
@@ -139,7 +137,7 @@ text-decoration: none;
   }
   .btn:hover span:nth-child(3) {
     transform: translateX(-115%);
-    transition: 1s 0.5s;
+    transition: 0.73s 0.5s;
   }
   .btn span:nth-child(2) {
     right: 0;
@@ -150,7 +148,7 @@ text-decoration: none;
   }
   .btn:hover span:nth-child(2) {
     transform: translateY(100%);
-    transition: 1s 0.25s;
+    transition: 0.73s 0.25s;
   }
   .btn span:nth-child(4) {
     left: 0;
@@ -161,7 +159,7 @@ text-decoration: none;
   }
   .btn:hover span:nth-child(4) {
     transform: translateY(-130%);
-    transition: 1s 0.75s;
+    transition: 0.73s 0.75s;
   }
   
 
