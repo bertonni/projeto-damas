@@ -1,28 +1,41 @@
 @charset "UTF-8";
+/*Import da fonte(Cardo)*/
+@import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
+
+*{
+  padding: 0;
+  margin: 0;
+}
 
 body{
- background-image: linear-gradient(to left, #29323c, #485563);
+  background-image: linear-gradient(to right, #29323c, #485563);
+  justify-content: center;
 }
 
 
 /*Formatação do cabeçalho*/
 header#cabecalho{
+  margin-top: 10px;
   position:relative;
   height:60px;
+  padding: 7px;
 }
 
-header#cabecalho img#eng{
+header#cabecalho img#regras{
   height: 50px;
   width: 50px;
   display:block;
   position:absolute;
   top:0px;
   left:0px;
+  padding: 7px 9px;
 }
 
 header#cabecalho h1{
   margin-left:50px;
-  padding-top:10px;
+  padding-left: 12px;
+  font-family: 'Cardo', serif;
+  color: white;
 }
 
 /*Formatação do menu de navegação*/
@@ -33,62 +46,54 @@ nav#menu {
   
 }
 
-nav#menu ul{
-list-style: none;
-font-size: 10pt;
-width: 100%;
-height: 100%;
-padding-left:20px;
+div#menu ul{
+  list-style: none;
+  margin-left: 30px;
 }
 
-nav#menu li.cima {
-display: inline-block;
-width: 140px;
-height: 40px;
-padding-top:5px;
-background-color: #255784;
-border-radius: 7px;
-transition: width 2s;
-letter-spacing: 4px;
-text-align: center;
-}
-
-nav#menu li.baixo {
-display: inline-block;
-width: 140px;
-height: 40px;
-padding-top:5px;
-background-color: #255784;
-border-radius: 7px;
-transition: width 2s;
-letter-spacing: 4px;
-text-align: center;
-margin-top: 10px;
+div#menu li {
+  position: relative;
+  display: inline-flex;
+  width: 185px;
+  height: 43px;
+  margin-left: 20px;
+  margin-bottom: 9px;
+  background-color: #255784;
+  border-radius: 7px;
+  transition: width 2s;
+  font-family: Consolas;
+  letter-spacing: 3px;
+  text-align: center;
 }
 
 
-nav#menu li:hover{
-background-color:#5a94c7;
-box-shadow: 0 0 20px var(--primary-color), 0 0 80px var(--primary-color),
-      0 0 160px var(--primary-color), 0 0 320px var(--primary-color);
-    transition-delay: 1s;
+div#menu li:hover{
+  background-color:#5a94c7;
+  box-shadow: 0 0 20px #2196f3, 0 0 80px #2196f3,
+        0 0 160px #2196f3, 0 0 320px #2196f3;
+      transition-delay: 1s;
 }
 
-nav#menu li a{
-color: #0e0b16;
-text-decoration: none;
-height: 100%;
-width: 100%;
-padding: 10px;
+div#menu li a{
+  color: #0e0b16;
+  text-decoration: none;
+  height: 100%;
+  width: 100%;
+  padding-top: 12px;
+  font-size: 11pt;
+}
+
+div#menu li#voltar{
+  position: relative;
+  left: 520px;
 }
 
 /*formatação do iframe*/
 section iframe#regrinhas{
-  margin-top: 63px;
-  width:510px;
-  height:580px;
-  box-shadow: 2px 2px 2px black;
+  margin-top: 20px;
+  width: 100%;
+  height: 370px;
   border: 3px black;
   overflow: hidden;
- 
+  
 }

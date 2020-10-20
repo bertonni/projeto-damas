@@ -3,7 +3,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 /*Import da fonte(Cardo)*/
 @import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
-/*Import da fonte (Console2P)*/
 
 *{
     padding: 0;
@@ -16,7 +15,7 @@ body{
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-image: linear-gradient(to left, #29323c, #485563);
+    background-image: linear-gradient(to right, #29323c, #485563);
 }
 
 /*Menu*/
@@ -62,7 +61,7 @@ background-color: #255784;
 border-radius: 7px;
 transition: width 2s;
 font-family: Consolas;
-letter-spacing: 4px;
+letter-spacing: 3px;
 text-align: center
 }
 
