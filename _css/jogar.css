@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+body{
+    background-image: linear-gradient(to right, #29323c, #485563);
+    
+}
+
+div.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.tabuleiro{
+    display: flex;
+    flex-wrap: wrap;
+    width: 600px;
+    height: 600px;
+    background-image: url(tabuleiro.svg);
+}
+
+div.casa{
+    min-width:75px;    
+    min-height:75px; 
+    background-size: 65px;   
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+div.casa:hover{
+    cursor: pointer;
+    background-color: blue;
+}
+
+.pecaBranca{
+    background-image: url(pecaBranca.png);
+}
+
+.pecaPreta{
+    background-image: url(pecaPreta.png);
+}
