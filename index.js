@@ -25,31 +25,31 @@ app.get('/',function(req,res){
 });    
 
 app.get('/regras',function(req,res){
-    fs.readFile('regras.html','utf-8', function(err,data){
+    fs.readFile('_html/regras.html','utf-8', function(err,data){
         res.send(data)
     });
 });  
 
 app.get('/sobre',function(req,res){
-    fs.readFile('sobre.html','utf-8', function(err,data){
+    fs.readFile('_html/sobre.html','utf-8', function(err,data){
         res.send(data)
     });
 });  
 
 app.get('/configuracoes',function(req,res){
-    fs.readFile('configuracoes.html','utf-8', function(err,data){
+    fs.readFile('_html/configuracoes.html','utf-8', function(err,data){
         res.send(data)
     });
 });  
 
 app.get('/iframe',function(req,res){
-    fs.readFile('iframe_regras.html','utf-8', function(err,data){
+    fs.readFile('_html/iframe_regras.html','utf-8', function(err,data){
         res.send(data)
     });
 });  
 
 app.get('/jogar',function(req,res){
-    fs.readFile('jogar.html', 'utf-8', function(err,data){
+    fs.readFile('_html/jogar.html', 'utf-8', function(err,data){
  
         console.log(__dirname)
 
