@@ -29,7 +29,8 @@ div.casa{
 
 div.casa:hover{
     cursor: pointer;
-    background-color: blue;
+    /*background-color: blue;*/
+    opacity: 0.5;
 }
 
 .pecaBranca{
