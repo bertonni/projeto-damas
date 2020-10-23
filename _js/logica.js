@@ -1,7 +1,7 @@
 
 var contador = 0;
 var ultimaJogada = "";
-var jogadorAtual = "B";
+var jogadorAtual = "P";
 var oponente;
 var ultimaPosicaoValidaSupDir = "";
 var ultimaPosicaoValidaSupEsq = "";
@@ -36,10 +36,11 @@ function getPeca(linha,coluna){
             document.getElementById(ultimaPosicaoValidaSupEsq).style.backgroundColor="initial";
             document.getElementById(ultimaPosicaoValidaSupDir).style.backgroundColor="initial";
             document.getElementById(ultimaPosicaoValidaInfEsq).style.backgroundColor="initial";
-            //document.getElementById(ultimaPosicaoValidaInfDir).style.backgroundColor="initial";
+            document.getElementById(ultimaPosicaoValidaInfDir).style.backgroundColor="initial";
             verificaSupEsquerdo(linha,coluna,jogadorAtual);
             verificaSupDireito(linha,coluna,jogadorAtual);
             verificaInfEsquerdo(linha,coluna,jogadorAtual);
+            verificaInfDireito(linha,coluna,jogadorAtual);
             ultimaJogada = linha + "-" + coluna;
         } else {
             contador = 0;
@@ -52,6 +53,7 @@ function getPeca(linha,coluna){
         verificaSupEsquerdo(linha,coluna,jogadorAtual);
         verificaSupDireito(linha,coluna,jogadorAtual);
         verificaInfEsquerdo(linha,coluna,jogadorAtual);
+        verificaInfDireito(linha,coluna,jogadorAtual);
         contador++
         ultimaJogada = linha + "-" + coluna;
     }
@@ -120,6 +122,30 @@ function verificaInfEsquerdo(linha,coluna,jogadorAtual){
                 if(tabuleiro[linha + 2][coluna - 2] == " "){
                     document.getElementById((linha + 2) + "-" + (coluna - 2)).style.backgroundColor="#49cc37";
                     ultimaPosicaoValidaInfEsq = (linha+1) + "-" + (coluna-1);
+                    return true;
+                }
+            }
+        }
+    } 
+    return false;
+}
+
+function verificaInfDireito(linha,coluna,jogadorAtual){
+    oponente = jogadorAtual == "B"? "P": "B";
+    if(linha + 1 <= 7 && coluna + 1 <= 7){
+        if(tabuleiro[linha + 1][coluna + 1] == jogadorAtual){
+            ultimaPosicaoValidaInfDir = (linha) + "-" + (coluna);
+ 
+        }
+        if(tabuleiro[linha + 1][coluna + 1] == " "){
+            document.getElementById((linha + 1) + "-" + (coluna - 1)).style.backgroundColor="#49cc37";
+            ultimaPosicaoValidaInfDir = (linha) + "-" + (coluna);
+            return true;
+        } else if(tabuleiro[linha + 1][coluna + 1] == oponente){
+            if(linha + 2 <= 7 && coluna + 2 <= 7){
+                if(tabuleiro[linha + 2][coluna + 2] == " "){
+                    document.getElementById((linha + 2) + "-" + (coluna + 2)).style.backgroundColor="#49cc37";
+                    ultimaPosicaoValidaInfDir = (linha+1) + "-" + (coluna+1);
                     return true;
                 }
             }
