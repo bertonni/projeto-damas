@@ -8,6 +8,8 @@ var ultimaPosicaoValidaSupEsq = "";
 var ultimaPosicaoValidaInfEsq = "";
 var ultimaPosicaoValidaInfDir = "";
 var elemento;
+var totalPecasBrancas = 12;
+var totalPecasPretas = 12;
 
 var jogadasPossiveis = [];
 var indicesjogadasPossiveis = [];
@@ -41,7 +43,7 @@ function getPeca(linha, coluna) {
 
     if (contador == 1) {
         if (tabuleiro[linha][coluna] == " ") {
-            if(indicesjogadasPossiveis.indexOf(linha + "-" + coluna) == -1){
+            if (indicesjogadasPossiveis.indexOf(linha + "-" + coluna) == -1) {
                 document.getElementById(ultimaJogada).style.backgroundColor = "initial";
                 return;
             }
@@ -51,8 +53,13 @@ function getPeca(linha, coluna) {
             var temp = tabuleiro[linha][coluna];
             tabuleiro[linha][coluna] = tabuleiro[ultimaLinha][ultimaColuna];
             tabuleiro[ultimaLinha][ultimaColuna] = temp;
+
             
+                eliminarPeca(linha, coluna, ultimaLinha, ultimaColuna, tabuleiro);
+            
+
             atualizaTabuleiro(tabuleiro);
+
             document.getElementById(ultimaJogada).style.backgroundColor = "initial";
             jogadorAtual = oponente;
         } else if (tabuleiro[linha][coluna] == jogadorAtual) {
@@ -157,6 +164,7 @@ function verificaSupEsquerdo(linha, coluna, jogadorAtual) {
             if (tabuleiro[linha - 1][coluna - 1] == " ") {
                 return true;
             } else if (tabuleiro[linha - 1][coluna - 1] == oponente) {
+                temOponente = (linha - 1) + "-" + (coluna - 1);
                 if (linha - 2 >= 0 && coluna - 2 >= 0) {
                     if (tabuleiro[linha - 2][coluna - 2] == " ") {
                         return true;
@@ -234,6 +242,7 @@ function verificaInfDireito(linha, coluna, jogadorAtual) {
 function atualizaTabuleiro(tabuleiro) {
 
     elemento = document.getElementsByClassName("casa");
+
     var contador = 0;
 
     for (var i = 0; i < tabuleiro.length; i++) {
@@ -243,9 +252,61 @@ function atualizaTabuleiro(tabuleiro) {
             } else if (tabuleiro[i][j] == "B") {
                 elemento[contador].classList.add("pecaBranca");
             } else {
-                elemento[contador].classList.remove("pecaPreta", "pecaBranca");
+                if (elemento[contador].classList.contains("pecaPreta")) {
+                    elemento[contador].classList.remove("pecaPreta");
+                } else if (elemento[contador].classList.contains("pecaBranca")) {
+                    elemento[contador].classList.remove("pecaBranca");
+                }
             }
             contador++;
         }
     }
 }
+
+function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
+
+    linhaDest = Number(linhaDest);
+    colunaDest = Number(colunaDest);
+    linhaOrig = Number(linhaOrig);
+    colunaOrig = Number(colunaOrig);
+
+    if (linhaOrig - linhaDest == 2) {
+        //Foi pra cima
+        if (colunaOrig - colunaDest == 2) {
+            //Foi pra esquerda superior
+            if (tabuleiro[linhaOrig - 1][colunaOrig - 1] === "B") {
+                totalPecasBrancas--;
+            } else {
+                totalPecasPretas--;
+            }
+            tabuleiro[linhaOrig - 1][colunaOrig - 1] = " ";
+            //Foi pra direita superior
+        } else if(colunaOrig - colunaDest == -2){
+            if(tabuleiro[linhaOrig - 1][colunaOrig + 1] === "B"){
+                totalPecasBrancas--;
+            } else {
+                totalPecasBrancas--;
+            }
+            tabuleiro[linhaOrig - 1][colunaOrig + 1] = " "
+        }
+        //Foi pra baixo
+    } else if(linhaOrig - linhaDest == -2){
+        //Esquerda inferior
+        if(colunaOrig - colunaDest == 2){
+            if(tabuleiro[linhaOrig + 1][colunaOrig - 1] === "B"){
+                totalPecasBrancas--;
+            } else {
+                totalPecasPretas--;
+            }
+            tabuleiro[linhaOrig + 1][colunaOrig - 1] = " ";
+            //Direita inferior
+        } else if(colunaOrig - colunaDest == -2){
+            if(tabuleiro[linhaOrig + 1][colunaOrig + 1] === "B"){
+                totalPecasBrancas--;
+            } else {
+                totalPecasPretas--;
+            }
+            tabuleiro[linhaOrig + 1][colunaOrig + 1] = " ";
+        }
+    }
+} 
