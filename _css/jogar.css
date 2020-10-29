@@ -40,3 +40,11 @@ div.casa:hover{
 .pecaPreta{
     background-image: url(pecaPreta.png);
 }
+
+.pecaDamaBranca{
+    background-image: url(damaBranca.png);
+}
+
+.pecaDamaPreta{
+    background-image: url(damaPreta.png);
+}
