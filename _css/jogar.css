@@ -1,4 +1,14 @@
 @charset "UTF-8";
+/*Import da fonte(Cardo)*/
+@import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
+/*Import da fonte (Roboto)*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+*{
+    font-family: Consolas;
+    margin: 0;
+    padding: 0;
+}
 
 body{
     background-image: linear-gradient(to right, #29323c, #485563);
@@ -7,22 +17,91 @@ body{
 
 div.container{
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
+}
+
+div#jogadorVez{
+    display: inline-block;
+    margin-left: 17.5cm;
+}
+
+div#apoio{
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+div#jogadorVez h3{
+    padding: 20px 0px 20px 0px;
 }
 
 div.tabuleiro{
     display: flex;
     flex-wrap: wrap;
-    width: 600px;
-    height: 600px;
+    width: 496px;
+    height: 496px;
     background-image: url(tabuleiro.svg);
+    border: #6b481e solid 20px;
+    border-radius: 7px;
+    
+}
+
+div.ladoEsquerdo{
+    background-color: white;
+    min-height: 496px;
+    min-width: 310px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+div.ladoEsquerdo h1#quantBranco{
+    position: absolute;
+    bottom: 0;
+    left: 55px;
+    font-size: 15pt;
+    bottom: 14px;
+}
+
+div.ladoEsquerdo img{
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    bottom: 3px;
+    left: 5px;
+}
+
+div.ladoDireito{
+    background-color: white;
+    min-height: 496px;
+    min-width: 310px;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+div.ladoDireito h1#quantPreto{
+    font-size: 15pt;
+    position: absolute;
+    left: 45px;
+    font-size: 15pt;
+    top: 14px;
+}
+
+div.ladoDireito img{
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    top: 3px;
+    
 }
 
 div.casa{
-    min-width:75px;    
-    min-height:75px; 
-    background-size: 65px;   
+    min-width:62px;    
+    min-height:62px; 
+    background-size: 52px;   
     background-repeat: no-repeat;
     background-position: center;
 }

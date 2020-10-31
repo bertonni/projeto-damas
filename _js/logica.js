@@ -26,8 +26,11 @@ var tabuleiro = [
     ["B", "X", "B", "X", "B", "X", "B", "X"],
 ]
 
-function getPeca(linha, coluna) {
+    document.getElementById("quantPecasBrancas").innerHTML=totalPecasBrancas;
+    document.getElementById("quantPecasPretas").innerHTML=totalPecasPretas;
 
+function getPeca(linha, coluna) {
+    
     for (var i = 0; i < jogadasPossiveis.length; i++) {
         elemento = document.getElementById(jogadasPossiveis[i]);
         elemento.style.backgroundColor = "initial";
@@ -49,27 +52,35 @@ function getPeca(linha, coluna) {
     caracterAtual = tabuleiro[linha][coluna];
 
     if (contador == 1) {
-
         if (tabuleiro[linha][coluna] == " ") {
-            if (indicesjogadasPossiveis.indexOf(linha + "-" + coluna) == -1) {
-                document.getElementById(ultimaJogada).style.backgroundColor = "initial";
-                return;
+             if (indicesjogadasPossiveis.indexOf(linha + "-" + coluna) == -1){
+                 document.getElementById(ultimaJogada).style.backgroundColor = "initial";
+                 return;
             }
+     
             var stringDividida = ultimaJogada.split("-");
             var ultimaLinha = stringDividida[0];
             var ultimaColuna = stringDividida[1];
             var temp = tabuleiro[linha][coluna];
             tabuleiro[linha][coluna] = tabuleiro[ultimaLinha][ultimaColuna];
             tabuleiro[ultimaLinha][ultimaColuna] = temp;
+            
+            eliminarPeca(linha, coluna, ultimaLinha, ultimaColuna, tabuleiro);
+            
 
             if (linha == 0 && jogadorAtual[0] == "B") {
                 transformaDama(linha, coluna, jogadorAtual[0]);
             } else if (linha == 7 && jogadorAtual[0] == "P") {
                 transformaDama(linha, coluna, jogadorAtual[0]);
             }
-
-            eliminarPeca(linha, coluna, ultimaLinha, ultimaColuna, tabuleiro);
+            
             atualizaTabuleiro(tabuleiro);
+
+            if(totalPecasBrancas == 0){
+                alert("O preto ganhou!");
+            } else if(totalPecasPretas == 0){
+                alert("O branco ganhou!");
+            }
             contador = 0;
 
             document.getElementById(ultimaJogada).style.backgroundColor = "initial";
@@ -77,11 +88,17 @@ function getPeca(linha, coluna) {
             jogadorAtual[0] = oponente[0];
             jogadorAtual[1] = oponente[1];
 
+            if(jogadorAtual[0]== "B"){
+                document.getElementById("vez").setAttribute("src" , "pecaBranca.png");
+            } else if(jogadorAtual[0]== "P"){
+                document.getElementById("vez").setAttribute("src" , "pecaPreta.png");
+            }
+
             return;
 
         } else if (jogadorAtual.indexOf(tabuleiro[linha][coluna]) != -1) {
-            document.getElementById(linha + "-" + coluna).style.backgroundColor = "red";
             document.getElementById(ultimaJogada).style.backgroundColor = "initial";
+            document.getElementById(linha + "-" + coluna).style.backgroundColor = "red";
 
             if (verificaSupEsquerdo(linha, coluna, caracterAtual)) {
                 if (tabuleiro[linha - 1][coluna - 1] == " ") {
@@ -120,11 +137,9 @@ function getPeca(linha, coluna) {
         }
 
     } else if (contador == 0) {
-        console.log("entrei aqui")
         if (tabuleiro[linha][coluna] == " ") {
             return;
         }
-        console.log(linha + "-" + coluna)
 
         document.getElementById(linha + "-" + coluna).style.backgroundColor = "red";
 
@@ -334,7 +349,7 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
             if (tabuleiro[linhaOrig - 1][colunaOrig + 1] === "B") {
                 totalPecasBrancas--;
             } else {
-                totalPecasBrancas--;
+                totalPecasPretas--;
             }
             tabuleiro[linhaOrig - 1][colunaOrig + 1] = " "
         }
@@ -358,6 +373,8 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
             tabuleiro[linhaOrig + 1][colunaOrig + 1] = " ";
         }
     }
+    document.getElementById("quantPecasBrancas").innerHTML=totalPecasBrancas;
+    document.getElementById("quantPecasPretas").innerHTML=totalPecasPretas;
 }
 
 function transformaDama(linha, coluna, jogadorAtual) {

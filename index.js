@@ -58,11 +58,11 @@ app.get('/jogar',function(req,res){
         for(var i = 0; i <= 7; i++){ 
             for(var j = 0; j <= 7; j++){
                 if(tabuleiro[i][j] == "B"){
-                    quadrado += `<div class="casa pecaBranca"  id ="${i}-${j}" onclick="getPeca(${i} , ${j})">${i}-${j}</div>`
+                    quadrado += `<div class="casa pecaBranca"  id ="${i}-${j}" onclick="getPeca(${i} , ${j})"></div>`
                 } else if(tabuleiro[i][j] == "P"){
-                    quadrado += `<div class="casa pecaPreta"  id ="${i}-${j}" onclick="getPeca(${i} , ${j})">${i}-${j}</div>`
+                    quadrado += `<div class="casa pecaPreta"  id ="${i}-${j}" onclick="getPeca(${i} , ${j})"></div>`
                 } else{
-                    quadrado += `<div class="casa"  id ="${i}-${j}" onclick="getPeca(${i} , ${j})">${i}-${j}</div>`
+                    quadrado += `<div class="casa"  id ="${i}-${j}" onclick="getPeca(${i} , ${j})"></div>`
                 }
             }
         }

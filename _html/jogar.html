@@ -10,11 +10,29 @@
 </head>
 
 <body>
+    <div id="jogadorVez">
+        <div id="apoio">
+            <h3>Vez das:</h3> 
+            <img src="pecaBranca.png" alt="" height="45px" width="45px" id="vez">
+        </div>
+    </div>
     <div class="container">
+        <button>VOLTAR</button>
+        <div class="ladoEsquerdo">
+            <img src="pecaBranca.png" alt="Peça Branca">
+            <h1 id="quantBranco">Quantidade Peças: <span id="quantPecasBrancas"></span></h1>
+        </div>
         <div class="tabuleiro">
             _QUADRADO_
         </div>
+
+        <div class="ladoDireito">
+            <img src="pecaPreta.png" alt="Peça Preta">
+            <h1 id="quantPreto">Quantidade Peças: <span id="quantPecasPretas"></span></h1>
+        </div>
+
     </div>
+
 </body>
 <script src="logica.js"></script>
 </html>
