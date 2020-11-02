@@ -26,13 +26,15 @@ header#cabecalho img#regras{
   width: 50px;
   display:block;
   position:absolute;
-  top:0px;
-  left:0px;
+  top:8px;
+  left:490px;
   padding: 7px 9px;
 }
 
 header#cabecalho h1{
-  margin-left:50px;
+  position: absolute;
+  top: 20px;
+  left: 550px;
   padding-left: 12px;
   font-family: 'Cardo', serif;
   color: white;
@@ -49,6 +51,7 @@ nav#menu {
 div#menu ul{
   list-style: none;
   margin-left: 30px;
+  margin-top: 30px;
 }
 
 div#menu li {
@@ -84,8 +87,10 @@ div#menu li a{
 }
 
 div#menu li#voltar{
-  position: relative;
-  left: 520px;
+  width: 90px;
+  position: absolute;
+  top: 30px;
+  left: 20px;
 }
 
 /*formatação do iframe*/

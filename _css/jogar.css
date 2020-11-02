@@ -15,6 +15,12 @@ body{
     
 }
 
+:root {
+    --bg-color: #0e0b16;
+    --primary-color: #2196f3;
+    --secondary-color: #255784;
+  }
+
 div.container{
     display: flex;
     justify-content: space-evenly;
@@ -22,8 +28,9 @@ div.container{
 }
 
 div#jogadorVez{
+    color: white;
     display: inline-block;
-    margin-left: 17.5cm;
+    margin-left: 16.5cm;
 }
 
 div#apoio{
@@ -48,8 +55,8 @@ div.tabuleiro{
 }
 
 div.ladoEsquerdo{
-    background-color: white;
-    min-height: 496px;
+    top: 158px;
+    min-height: 55px;
     min-width: 310px;
     display: flex;
     justify-content: center;
@@ -58,6 +65,7 @@ div.ladoEsquerdo{
 }
 
 div.ladoEsquerdo h1#quantBranco{
+    color: white;
     position: absolute;
     bottom: 0;
     left: 55px;
@@ -74,8 +82,8 @@ div.ladoEsquerdo img{
 }
 
 div.ladoDireito{
-    background-color: white;
-    min-height: 496px;
+    bottom: 158px;
+    min-height: 55px;
     min-width: 310px;
     justify-content: center;
     align-items: center;
@@ -83,6 +91,7 @@ div.ladoDireito{
 }
 
 div.ladoDireito h1#quantPreto{
+    color: white;
     font-size: 15pt;
     position: absolute;
     left: 45px;
@@ -98,6 +107,35 @@ div.ladoDireito img{
     
 }
 
+div#botao{
+    background-color: violet;
+    width: 85px;
+    height: 40px;
+    position: absolute;
+    top: 20px;
+    left: 35px;
+    background-color: #255784;
+    border-radius: 7px;
+    font-family: Consolas;
+    letter-spacing: 3px;
+    text-align: center;
+    display: flex;
+}
+
+div#botao a{
+    color: #0e0b16;
+    padding: 10px;
+    text-decoration: none;
+}
+
+div#botao a:hover{
+    background-color:#5a94c7;
+    box-shadow: 0 0 20px var(--primary-color), 0 0 80px var(--primary-color),
+    0 0 160px var(--primary-color), 0 0 320px var(--primary-color);
+    transition-delay: 0.2s;
+    border-radius: 7px;
+}
+
 div.casa{
     min-width:62px;    
     min-height:62px; 
@@ -110,6 +148,12 @@ div.casa:hover{
     cursor: pointer;
     /*background-color: blue;*/
     opacity: 0.5;
+}
+
+img#reiniciar{
+    position: absolute;
+    right: 75px;
+    top: 20px;
 }
 
 .pecaBranca{

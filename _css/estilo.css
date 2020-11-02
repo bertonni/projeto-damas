@@ -59,7 +59,6 @@ margin-left: 30px;
 margin-bottom: 9px;
 background-color: #255784;
 border-radius: 7px;
-transition: width 2s;
 font-family: Consolas;
 letter-spacing: 3px;
 text-align: center
@@ -69,7 +68,7 @@ div.menu li:hover{
 background-color:#5a94c7;
 box-shadow: 0 0 20px var(--primary-color), 0 0 80px var(--primary-color),
       0 0 160px var(--primary-color), 0 0 320px var(--primary-color);
-    transition-delay: 1s;
+    transition-delay: 0.2s;
 }
 
 div.menu li a{

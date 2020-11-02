@@ -338,7 +338,7 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
         //Foi pra cima
         if (colunaOrig - colunaDest == 2) {
             //Foi pra esquerda superior
-            if (tabuleiro[linhaOrig - 1][colunaOrig - 1] === "B") {
+            if (tabuleiro[linhaOrig - 1][colunaOrig - 1] === "B" || tabuleiro[linhaOrig - 1][colunaOrig - 1] === "DB") {
                 totalPecasBrancas--;
             } else {
                 totalPecasPretas--;
@@ -346,7 +346,7 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
             tabuleiro[linhaOrig - 1][colunaOrig - 1] = " ";
             //Foi pra direita superior
         } else if (colunaOrig - colunaDest == -2) {
-            if (tabuleiro[linhaOrig - 1][colunaOrig + 1] === "B") {
+            if (tabuleiro[linhaOrig - 1][colunaOrig + 1] === "B" || tabuleiro[linhaOrig - 1][colunaOrig + 1] === "DB") {
                 totalPecasBrancas--;
             } else {
                 totalPecasPretas--;
@@ -357,7 +357,7 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
     } else if (linhaOrig - linhaDest == -2) {
         //Esquerda inferior
         if (colunaOrig - colunaDest == 2) {
-            if (tabuleiro[linhaOrig + 1][colunaOrig - 1] === "B") {
+            if (tabuleiro[linhaOrig + 1][colunaOrig - 1] === "B" || tabuleiro[linhaOrig + 1][colunaOrig - 1] === "DB") {
                 totalPecasBrancas--;
             } else {
                 totalPecasPretas--;
@@ -365,7 +365,7 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
             tabuleiro[linhaOrig + 1][colunaOrig - 1] = " ";
             //Direita inferior
         } else if (colunaOrig - colunaDest == -2) {
-            if (tabuleiro[linhaOrig + 1][colunaOrig + 1] === "B") {
+            if (tabuleiro[linhaOrig + 1][colunaOrig + 1] === "B" || tabuleiro[linhaOrig + 1][colunaOrig + 1] === "DB") {
                 totalPecasBrancas--;
             } else {
                 totalPecasPretas--;
