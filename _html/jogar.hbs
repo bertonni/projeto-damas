@@ -13,6 +13,7 @@
     var totalBrancas = "{{dados.totalBrancas}}";
     var totalPretas = "{{dados.totalPretas}}";
     var playerAtual = "{{dados.jogadorAtual}}";
+    playerAtual =playerAtual.split(",")
     var array = [];
     var cont = 0;
     var tabuleiroDividido = novoTabuleiro.split(",");
@@ -28,7 +29,7 @@
 <body>
     <div id="jogadorVez">
         <div id="apoio">
-            <a href="/jogar"><img src="costas.png" id="reiniciar"></a>
+            <a href="/jogar?reset=true"><img src="costas.png" id="reiniciar"></a>
             <h3>Vez das:</h3> 
             <img src="pecaBranca.png" alt="" height="45px" width="45px" id="vez">
         </div>
