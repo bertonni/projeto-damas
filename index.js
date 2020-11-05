@@ -1,11 +1,14 @@
 const fs = require('fs'); //file system
 const express = require('express');
-
+const hbs = require('hbs');
 const app = express();
 
 app.use(express.static(__dirname + '/_css'));
 app.use(express.static(__dirname + '/_img'));
 app.use(express.static(__dirname + '/_js'));
+
+app.set('view engine', 'hbs');
+app.set('views' , __dirname + '/_html');
 
 var tabuleiro = [
     ["X", "P", "X", "P", "X", "P", "X", "P"],
@@ -17,6 +20,21 @@ var tabuleiro = [
     ["X", "B", "X", "B", "X", "B", "X", "B"],
     ["B", "X", "B", "X", "B", "X", "B", "X"],
 ]
+
+var totalPecasBrancas = 12;
+var totalPecasPretas = 12;
+var jogadorAtual = ["B", "DB"];
+var destino = null;
+var origem = null;
+
+var dados = {
+    tabuleiro: tabuleiro,
+    totalBrancas: totalPecasBrancas,
+    totalPretas: totalPecasPretas,
+    jogadorAtual: jogadorAtual,
+    destino: destino,
+    origem: origem
+}
 
 app.get('/',function(req,res){
     fs.readFile('index.html','utf-8', function(err,data){
@@ -67,8 +85,8 @@ app.get('/jogar',function(req,res){
             }
         }
 
-        data = data.replace(/_QUADRADO_/, quadrado)
-        res.send(data)
+        data = quadrado
+        res.render('jogar', {data,dados});
     });
 });
 

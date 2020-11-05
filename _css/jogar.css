@@ -46,8 +46,10 @@ div#jogadorVez h3{
 div.tabuleiro{
     display: flex;
     flex-wrap: wrap;
-    width: 496px;
-    height: 496px;
+    min-width: 496px;
+    max-width: 496px;
+    min-height: 496px;
+    max-height: 496px;
     background-image: url(tabuleiro.svg);
     border: #6b481e solid 20px;
     border-radius: 7px;

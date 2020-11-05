@@ -1,30 +1,17 @@
 
 var contador = 0;
 var ultimaJogada = "";
-var jogadorAtual = ["B", "DB"];
+var jogadorAtual = playerAtual
 var caracterAtual = "";
 var oponente = [];
-var ultimaPosicaoValidaSupDir = "";
-var ultimaPosicaoValidaSupEsq = "";
-var ultimaPosicaoValidaInfEsq = "";
-var ultimaPosicaoValidaInfDir = "";
 var elemento;
-var totalPecasBrancas = 12;
-var totalPecasPretas = 12;
+var totalPecasBrancas = totalBrancas;
+var totalPecasPretas = totalPretas;
 
 var jogadasPossiveis = [];
 var indicesjogadasPossiveis = [];
 
-var tabuleiro = [
-    ["X", "P", "X", "P", "X", "P", "X", "P"],
-    ["P", "X", "P", "X", "P", "X", "P", "X"],
-    ["X", "P", "X", "P", "X", "P", "X", "P"],
-    [" ", "X", " ", "X", " ", "X", " ", "X"],
-    ["X", " ", "X", " ", "X", " ", "X", " "],
-    ["B", "X", "B", "X", "B", "X", "B", "X"],
-    ["X", "B", "X", "B", "X", "B", "X", "B"],
-    ["B", "X", "B", "X", "B", "X", "B", "X"],
-]
+var tabuleiro = array;
 
     document.getElementById("quantPecasBrancas").innerHTML=totalPecasBrancas;
     document.getElementById("quantPecasPretas").innerHTML=totalPecasPretas;
@@ -68,9 +55,9 @@ function getPeca(linha, coluna) {
             eliminarPeca(linha, coluna, ultimaLinha, ultimaColuna, tabuleiro);
             
 
-            if (linha == 4 && jogadorAtual[0] == "B") {
+            if (linha == 0 && jogadorAtual[0] == "B") {
                 transformaDama(linha, coluna, jogadorAtual[0]);
-            } else if (linha == 3 && jogadorAtual[0] == "P") {
+            } else if (linha == 7 && jogadorAtual[0] == "P") {
                 transformaDama(linha, coluna, jogadorAtual[0]);
             }
             

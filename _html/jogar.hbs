@@ -8,7 +8,23 @@
     <link rel="stylesheet" href="jogar.css">
     
 </head>
+<script>
+    var novoTabuleiro = '{{dados.tabuleiro}}';
+    var totalBrancas = "{{dados.totalBrancas}}";
+    var totalPretas = "{{dados.totalPretas}}";
+    var playerAtual = "{{dados.jogadorAtual}}";
+    var array = [];
+    var cont = 0;
+    var tabuleiroDividido = novoTabuleiro.split(",");
 
+    for(let i = 0; i < 8; i++){
+        array[i] = [];
+        for(let j = 0; j < 8; j++){
+            array[i][j] = tabuleiroDividido[cont];
+            cont++;
+        }
+    }
+</script>
 <body>
     <div id="jogadorVez">
         <div id="apoio">
@@ -24,7 +40,7 @@
             <h1 id="quantBranco">Quantidade Peças: <span id="quantPecasBrancas"></span></h1>
         </div>
         <div class="tabuleiro">
-            _QUADRADO_
+            {{{data}}}
         </div>
 
         <div class="ladoDireito">
