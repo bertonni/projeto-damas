@@ -68,9 +68,9 @@ function getPeca(linha, coluna) {
             eliminarPeca(linha, coluna, ultimaLinha, ultimaColuna, tabuleiro);
             
 
-            if (linha == 0 && jogadorAtual[0] == "B") {
+            if (linha == 4 && jogadorAtual[0] == "B") {
                 transformaDama(linha, coluna, jogadorAtual[0]);
-            } else if (linha == 7 && jogadorAtual[0] == "P") {
+            } else if (linha == 3 && jogadorAtual[0] == "P") {
                 transformaDama(linha, coluna, jogadorAtual[0]);
             }
             
@@ -100,37 +100,11 @@ function getPeca(linha, coluna) {
             document.getElementById(ultimaJogada).style.backgroundColor = "initial";
             document.getElementById(linha + "-" + coluna).style.backgroundColor = "red";
 
-            if (verificaSupEsquerdo(linha, coluna, caracterAtual)) {
-                if (tabuleiro[linha - 1][coluna - 1] == " ") {
-                    jogadasPossiveis.push((linha - 1) + "-" + (coluna - 1));
-                } else {
-                    jogadasPossiveis.push((linha - 2) + "-" + (coluna - 2));
-                }
-            }
+            verificaSupEsquerdo(linha,coluna,caracterAtual);
+            verificaSupDireito(linha,coluna,caracterAtual);
+            verificaInfEsquerdo(linha,coluna,caracterAtual);
+            verificaInfDireito(linha,coluna,caracterAtual);
 
-            if (verificaSupDireito(linha, coluna, caracterAtual)) {
-                if (tabuleiro[linha - 1][coluna + 1] == " ") {
-                    jogadasPossiveis.push((linha - 1) + "-" + (coluna + 1));
-                } else {
-                    jogadasPossiveis.push((linha - 2) + "-" + (coluna + 2));
-                }
-            }
-
-            if (verificaInfEsquerdo(linha, coluna, caracterAtual)) {
-                if (tabuleiro[linha + 1][coluna - 1] == " ") {
-                    jogadasPossiveis.push((linha + 1) + "-" + (coluna - 1));
-                } else {
-                    jogadasPossiveis.push((linha + 2) + "-" + (coluna - 2));
-                }
-            }
-
-            if (verificaInfDireito(linha, coluna, caracterAtual)) {
-                if (tabuleiro[linha + 1][coluna + 1] == " ") {
-                    jogadasPossiveis.push((linha + 1) + "-" + (coluna + 1));
-                } else {
-                    jogadasPossiveis.push((linha + 2) + "-" + (coluna + 2));
-                }
-            }
             ultimaJogada = linha + "-" + coluna;
         } else {
             //contador = 0;
@@ -143,37 +117,10 @@ function getPeca(linha, coluna) {
 
         document.getElementById(linha + "-" + coluna).style.backgroundColor = "red";
 
-        if (verificaSupEsquerdo(linha, coluna, caracterAtual)) {
-            if (tabuleiro[linha - 1][coluna - 1] == " ") {
-                jogadasPossiveis.push((linha - 1) + "-" + (coluna - 1));
-            } else {
-                jogadasPossiveis.push((linha - 2) + "-" + (coluna - 2));
-            }
-        }
-
-        if (verificaSupDireito(linha, coluna, caracterAtual)) {
-            if (tabuleiro[linha - 1][coluna + 1] == " ") {
-                jogadasPossiveis.push((linha - 1) + "-" + (coluna + 1));
-            } else {
-                jogadasPossiveis.push((linha - 2) + "-" + (coluna + 2));
-            }
-        }
-
-        if (verificaInfEsquerdo(linha, coluna, caracterAtual)) {
-            if (tabuleiro[linha + 1][coluna - 1] == " ") {
-                jogadasPossiveis.push((linha + 1) + "-" + (coluna - 1));
-            } else {
-                jogadasPossiveis.push((linha + 2) + "-" + (coluna - 2));
-            }
-        }
-
-        if (verificaInfDireito(linha, coluna, caracterAtual)) {
-            if (tabuleiro[linha + 1][coluna + 1] == " ") {
-                jogadasPossiveis.push((linha + 1) + "-" + (coluna + 1));
-            } else {
-                jogadasPossiveis.push((linha + 2) + "-" + (coluna + 2));
-            }
-        }
+            verificaSupEsquerdo(linha,coluna,caracterAtual);
+            verificaSupDireito(linha,coluna,caracterAtual);
+            verificaInfEsquerdo(linha,coluna,caracterAtual);
+            verificaInfDireito(linha,coluna,caracterAtual);
 
         contador++
         ultimaJogada = linha + "-" + coluna;
@@ -183,35 +130,30 @@ function getPeca(linha, coluna) {
         elemento = document.getElementById(jogadasPossiveis[i]);
         elemento.style.backgroundColor = "#49cc37";
         indicesjogadasPossiveis.push(jogadasPossiveis[i]);
-
     }
 }
 
 function verificaSupEsquerdo(linha, coluna, caracterAtual) {
     let oponentes = [];
+    let amigos = [];
     if (caracterAtual == "B" || caracterAtual == "DB") {
         oponentes = ["P", "DP"];
     } else {
         oponentes = ["B", "DB"];
     }
 
-    if (linha - 1 >= 0 && coluna - 1 >= 0) {
-        if (caracterAtual != "P" || oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1) {
-            if (tabuleiro[linha - 1][coluna - 1] == jogadorAtual) {
-                return false;
-            }
-            if (tabuleiro[linha - 1][coluna - 1] == " ") {
-                return true;
-            } else if (oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1) {
-                if (linha - 2 >= 0 && coluna - 2 >= 0) {
-                    if (tabuleiro[linha - 2][coluna - 2] == " ") {
-                        return true;
-                    }
-                }
+    if((linha - 1) < 0 || (coluna - 1) < 0 || jogadorAtual.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1){
+        return;
+    } else {
+        if(tabuleiro[linha - 1][coluna - 1] == " "){
+            jogadasPossiveis.push((linha - 1) + "-" + (coluna - 1));
+            if(caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1){
+                return;
             }
         }
+        return verificaSupEsquerdo((linha - 1) , (coluna - 1) , caracterAtual);
+
     }
-    return false;
 }
 
 function verificaSupDireito(linha, coluna, caracterAtual) {
@@ -222,23 +164,17 @@ function verificaSupDireito(linha, coluna, caracterAtual) {
         oponentes = ["B", "DB"];
     }
 
-    if (linha - 1 >= 0 && coluna + 1 <= 7) {
-        if (caracterAtual != "P" || oponentes.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1) {
-            if (tabuleiro[linha - 1][coluna + 1] == jogadorAtual) {
-                return false;
-            }
-            if (tabuleiro[linha - 1][coluna + 1] == " ") {
-                return true;
-            } else if (oponentes.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1) {
-                if (linha - 2 >= 0 && coluna + 2 <= 7) {
-                    if (tabuleiro[linha - 2][coluna + 2] == " ") {
-                        return true;
-                    }
-                }
+    if((linha - 1) < 0 || (coluna + 1) > 7 || jogadorAtual.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1){
+        return;
+    } else {
+        if(tabuleiro[linha - 1][coluna + 1] == " "){
+            jogadasPossiveis.push((linha - 1) + "-" + (coluna + 1));
+            if(caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1){
+                return;
             }
         }
+        return verificaSupDireito((linha - 1) , (coluna + 1) , caracterAtual);
     }
-    return false;
 }
 
 function verificaInfEsquerdo(linha, coluna, caracterAtual) {
@@ -249,23 +185,18 @@ function verificaInfEsquerdo(linha, coluna, caracterAtual) {
         oponentes = ["B", "DB"];
     }
 
-    if (linha + 1 <= 7 && coluna - 1 >= 0) {
-        if (caracterAtual != "B" || oponentes.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1) {
-            if (tabuleiro[linha + 1][coluna - 1] == caracterAtual) {
-                return false;
-            }
-            if (tabuleiro[linha + 1][coluna - 1] == " ") {
-                return true;
-            } else if (oponentes.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1) {
-                if (linha + 2 <= 7 && coluna - 2 >= 0) {
-                    if (tabuleiro[linha + 2][coluna - 2] == " ") {
-                        return true;
-                    }
-                }
+    if((linha + 1) > 7 || (coluna - 1) < 0 || jogadorAtual.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1){
+        return;
+    } else {
+        if(tabuleiro[linha + 1][coluna - 1] == " "){
+            jogadasPossiveis.push((linha + 1) + "-" + (coluna - 1));
+            if(caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1){
+                return;
             }
         }
+        return verificaInfEsquerdo((linha + 1) , (coluna - 1) , caracterAtual);
+
     }
-    return false;
 }
 
 function verificaInfDireito(linha, coluna, caracterAtual) {
@@ -276,23 +207,18 @@ function verificaInfDireito(linha, coluna, caracterAtual) {
         oponentes = ["B", "DB"];
     }
 
-    if (linha + 1 <= 7 && coluna + 1 <= 7) {
-        if (caracterAtual != "B" || oponentes.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1) {
-            if (tabuleiro[linha + 1][coluna + 1] == jogadorAtual) {
-                return false;
-            }
-            if (tabuleiro[linha + 1][coluna + 1] == " ") {
-                return true;
-            } else if (oponentes.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1) {
-                if (linha + 2 <= 7 && coluna + 2 <= 7) {
-                    if (tabuleiro[linha + 2][coluna + 2] == " ") {
-                        return true;
-                    }
-                }
+    if((linha + 1) > 7 || (coluna + 1) > 7 || jogadorAtual.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1){
+        return;
+    } else {
+        if(tabuleiro[linha + 1][coluna + 1] == " "){
+            jogadasPossiveis.push((linha + 1) + "-" + (coluna + 1));
+            if(caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1){
+                return;
             }
         }
+        return verificaInfDireito((linha + 1) , (coluna + 1) , caracterAtual);
+
     }
-    return false;
 }
 
 function atualizaTabuleiro(tabuleiro) {
@@ -336,7 +262,7 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
 
     if (linhaOrig - linhaDest == 2) {
         //Foi pra cima
-        if (colunaOrig - colunaDest == 2) {
+        if (colunaOrig - colunaDest == 2 ) {
             //Foi pra esquerda superior
             if (tabuleiro[linhaOrig - 1][colunaOrig - 1] === "B" || tabuleiro[linhaOrig - 1][colunaOrig - 1] === "DB") {
                 totalPecasBrancas--;
@@ -371,6 +297,44 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
                 totalPecasPretas--;
             }
             tabuleiro[linhaOrig + 1][colunaOrig + 1] = " ";
+        }
+        //Dama foi pra cima
+    } else if(linhaOrig - linhaDest > 2){
+            //Dama foi pra esquerda superior
+        if(colunaOrig - colunaDest > 2){
+            if(tabuleiro[linhaDest + 1][colunaDest + 1] === "B" || tabuleiro[linhaDest + 1][colunaDest + 1] === "DB"){
+                totalPecasBrancas--;
+            } else {
+                totalPecasPretas--;
+            }
+            tabuleiro[linhaDest + 1][colunaDest + 1] = " ";
+            //Dama foi pra direita superior
+        } else if(colunaOrig - colunaDest < -2){
+            if(tabuleiro[linhaDest + 1][colunaDest - 1] === "B" || tabuleiro[linhaDest + 1][colunaDest - 1] === "DB"){
+                totalPecasBrancas--;
+            } else {
+                totalPecasPretas--;
+            }
+            tabuleiro[linhaDest + 1][colunaDest - 1] = " ";
+        }
+        //Dama foi pra baixo
+    } else if(linhaOrig - linhaDest < -2){
+            //Dama foi pra esquerda inferior
+        if(colunaOrig - colunaDest > 2){
+            if(tabuleiro[linhaDest - 1][colunaDest + 1] === "B" || tabuleiro[linhaDest - 1][colunaDest + 1] === "DB"){
+                totalPecasBrancas--;
+            } else {
+                totalPecasPretas--;
+            }
+            tabuleiro[linhaDest - 1][colunaDest + 1] = " ";
+            //Dama foi pra direita inferior
+        } else if(colunaOrig - colunaDest < - 2){
+            if(tabuleiro[linhaDest - 1][colunaDest - 1] === "B" || tabuleiro[linhaDest - 1][colunaDest - 1] === "DB"){
+                totalPecasBrancas--;
+            } else {
+                totalPecasPretas--;
+            }
+            tabuleiro[linhaDest - 1][colunaDest - 1] = " ";
         }
     }
     document.getElementById("quantPecasBrancas").innerHTML=totalPecasBrancas;
