@@ -173,3 +173,6 @@ img#reiniciar{
 .pecaDamaPreta{
     background-image: url(damaPreta.png);
 }
+.naoClicavel{
+    pointer-events: none;
+}

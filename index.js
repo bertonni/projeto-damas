@@ -25,15 +25,18 @@ var tabuleiro = [
 var totalPecasBrancas = 12;
 var totalPecasPretas = 12;
 var jogadorAtual = ["B", "DB"];
-var destino = null;
-var origem = null;
-var posicaoEliminada = [];
+var contadorDamas = 0;
+var contDamas = 0;
+var contadorForca = 0;
+var contForca = 0;
 
 var dados = {
     tabuleiro: tabuleiro,
     totalBrancas: totalPecasBrancas,
     totalPretas: totalPecasPretas,
-    jogadorAtual: jogadorAtual
+    jogadorAtual: jogadorAtual,
+    contadorDamas: contadorDamas,
+    contadorForca: contadorForca
 }
 
 app.get('/',function(req,res){
@@ -88,16 +91,32 @@ app.get('/jogar',function(req,res){
             let colEli = req.query.colEli;
             let player = [];
             player[0] = playerP;
-            player[1] = playerD; 
+            player[1] = playerD;
+
+            //Condição empate (20 lances de Dama sucessivo)
+            if(req.query.resul == "true"){
+                contDamas++;
+            } else {
+                contDamas = 0;
+            }
+
+            //Condicão empate (Força Maior)
+            if(req.query.for == 'BM' && totalPretas != 0){
+                contForca++;
+            } else if(req.query.for == 'PM' && totalBrancas !=0){
+                contForca++;
+            } else if(req.query.for == 'O'){
+                contForca = 0;
+            }
 
             //Computa a jogada
             let temp = tabuleiro[orig[0]][orig[1]];
             tabuleiro[orig[0]][orig[1]] = tabuleiro[dest[0]][dest[1]];
             tabuleiro[dest[0]][dest[1]] = temp;
             
-            if(dest[0] == 0 && req.query.playerP == "B"){
+            if(dest[0] == 4 && req.query.playerP == "B"){
                 tabuleiro[dest[0]][dest[1]] = "DB";
-            } else if(dest[0] == 7 && req.query.playerP == "P"){
+            } else if(dest[0] == 3 && req.query.playerP == "P"){
                 tabuleiro[dest[0]][dest[1]] = "DP";
             }
 
@@ -109,7 +128,9 @@ app.get('/jogar',function(req,res){
                 tabuleiro: tabuleiro,
                 totalBrancas: totalBrancas,
                 totalPretas: totalPretas,
-                jogadorAtual: player
+                jogadorAtual: player,
+                contadorDamas: contDamas,
+                contadorForca: contForca
             }
 
             dados = atualizado;
@@ -131,7 +152,9 @@ app.get('/jogar',function(req,res){
                 tabuleiro: tabuleiro,
                 totalBrancas: totalPecasBrancas,
                 totalPretas: totalPecasPretas,
-                jogadorAtual: jogadorAtual
+                jogadorAtual: jogadorAtual,
+                contadorDamas: contadorDamas,
+                contadorForca: contadorForca
             }
         }
 

@@ -11,6 +11,8 @@ var pecaEliminada;
 var jogadasPossiveis = [];
 var indicesjogadasPossiveis = [];
 var tabuleiro = array;
+var contadorDamas = 0;
+var apoio;
 
 if (jogadorAtual[0] == "B") {
     document.getElementById("vez").setAttribute("src", "pecaBranca.png");
@@ -18,11 +20,22 @@ if (jogadorAtual[0] == "B") {
     document.getElementById("vez").setAttribute("src", "pecaPreta.png");
 }
 
+if(contDamas == 20){
+    alert("Empate por limite de jogadas sucessivas de damas sem captura!")
+    document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
+}
+
+if(contForca == 20){
+    alert('Empate por jogador com maior número de damas não venceu em vinte lances!');
+    document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
+}
 
 if (totalPecasBrancas == 0) {
     alert("O preto ganhou!");
+    document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
 } else if (totalPecasPretas == 0) {
     alert("O branco ganhou!");
+    document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
 }
 
 document.getElementById("quantPecasBrancas").innerHTML = totalPecasBrancas;
@@ -48,8 +61,12 @@ function getPeca(linha, coluna) {
     if (tabuleiro[linha][coluna] == "X") {
         return;
     }
-
+    
     caracterAtual = tabuleiro[linha][coluna];
+    
+    if(caracterAtual != " "){
+        apoio = caracterAtual;
+    }
 
     if (contador == 1) {
         if (tabuleiro[linha][coluna] == " ") {
@@ -62,12 +79,12 @@ function getPeca(linha, coluna) {
             var ultimaLinha = stringDividida[0];
             var ultimaColuna = stringDividida[1];
             var jogadaAtual = linha + "-" + coluna;
-            var temp = tabuleiro[linha][coluna];
-            tabuleiro[linha][coluna] = tabuleiro[ultimaLinha][ultimaColuna];
-            tabuleiro[ultimaLinha][ultimaColuna] = temp;
+
+            var resultado = condicaoSucessiva(apoio);
+            var forcaMaior = condicaoMaiorForca(array ,jogadorAtual);
 
             pecaEliminada = eliminarPeca(linha, coluna, ultimaLinha, ultimaColuna, tabuleiro);
-            enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual);
+            enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual, resultado , forcaMaior);
             return;
 
         } else if (jogadorAtual.indexOf(tabuleiro[linha][coluna]) != -1) {
@@ -80,10 +97,7 @@ function getPeca(linha, coluna) {
             verificaInfDireito(linha, coluna, caracterAtual);
 
             ultimaJogada = linha + "-" + coluna;
-        } else {
-            //contador = 0;
         }
-
     } else if (contador == 0) {
         if (tabuleiro[linha][coluna] == " ") {
             return;
@@ -124,7 +138,6 @@ function verificaSupEsquerdo(linha, coluna, caracterAtual) {
     } else if(caracterAtual != "P"){
         if (tabuleiro[linha - 1][coluna - 1] == " ") {
             jogadasPossiveis.push((linha - 1) + "-" + (coluna - 1));
-            console.log("PUXEI", jogadasPossiveis)
             if (caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1) {
                 return;
             }
@@ -150,7 +163,6 @@ function verificaSupDireito(linha, coluna, caracterAtual) {
     } else if(caracterAtual != "P"){
         if (tabuleiro[linha - 1][coluna + 1] == " ") {
             jogadasPossiveis.push((linha - 1) + "-" + (coluna + 1));
-            console.log("PUXEI", jogadasPossiveis)
             if (caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1) {
                 return;
             }
@@ -175,7 +187,6 @@ function verificaInfEsquerdo(linha, coluna, caracterAtual) {
     } else if(caracterAtual != "B"){
         if (tabuleiro[linha + 1][coluna - 1] == " ") {
             jogadasPossiveis.push((linha + 1) + "-" + (coluna - 1));
-            console.log("PUXEI", jogadasPossiveis)
             if (caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1) {
                 return;
             }
@@ -201,7 +212,6 @@ function verificaInfDireito(linha, coluna, caracterAtual) {
     } else if(caracterAtual != "B"){
         if (tabuleiro[linha + 1][coluna + 1] == " ") {
             jogadasPossiveis.push((linha + 1) + "-" + (coluna + 1));
-            console.log("PUXEI", jogadasPossiveis)
             if (caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1) {
                 return;
             }
@@ -304,8 +314,6 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
             posicaoEliminar[1] = colunaDest - 1;
         }
     }
-    // document.getElementById("quantPecasBrancas").innerHTML=totalPecasBrancas;
-    // document.getElementById("quantPecasPretas").innerHTML=totalPecasPretas;
     return posicaoEliminar;
 }
 
@@ -318,7 +326,7 @@ function transformaDama(linha, coluna, jogadorAtual) {
     }
 }
 
-function enviaDadosServer(posicaoEliminada, destino, origem, totalPretas, totalBrancas, jogadorAtual) {
+function enviaDadosServer(posicaoEliminada, destino, origem, totalPretas, totalBrancas, jogadorAtual, resultado, forcaMaior) {
     let linhaEliminada;
     let colunaEliminada;
     if (posicaoEliminada.length == 0) {
@@ -332,6 +340,36 @@ function enviaDadosServer(posicaoEliminada, destino, origem, totalPretas, totalB
     let jogadorPeca = jogadorAtual[0];
     let jogadorDama = jogadorAtual[1];
 
-    var url = '/jogar?lineEli=' + linhaEliminada + '&colEli=' + colunaEliminada + '&dest=' + destino + '&orig=' + origem + '&totP=' + totalPretas + '&totB=' + totalBrancas + '&playerP=' + jogadorPeca + '&playerD=' + jogadorDama;
+    var url = '/jogar?lineEli=' + linhaEliminada + '&colEli=' + colunaEliminada + '&dest=' + destino + '&orig=' + origem + '&totP=' + totalPretas + '&totB=' + totalBrancas + '&playerP=' + jogadorPeca + '&playerD=' + jogadorDama + '&resul=' + resultado + '&for=' + forcaMaior;
     window.location.replace(url);
+}
+
+function condicaoSucessiva(apoio){
+     //20 lances sucessivos de Dama
+    if(apoio == "DB" || apoio == "DP"){
+        return true;
+    }
+    return false;
+}
+
+function condicaoMaiorForca(array ,jogadorAtual){
+    let contDamaBranca = 0;
+    let contDamaPreta = 0;
+    for(let i =0; i < array.length; i++){
+        for(let j= 0; j < array[i].length; j++){
+            if(array[i][j] == "DB"){
+                contDamaBranca++;
+            } else if(array[i][j] == "DP"){
+                contDamaPreta++;
+            }
+        }
+    }
+
+    if(contDamaBranca - contDamaPreta >= 2){
+        return 'BM';
+    } else if(contDamaPreta - contDamaBranca >= 2){
+        return 'PM';
+    } else {
+        return 'O';
+    }
 }
