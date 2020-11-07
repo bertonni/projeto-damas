@@ -23,7 +23,7 @@ var tabuleiro = [
 ]
 
 var totalPecasBrancas = 12;
-var totalPecasPretas = 12;
+var totalPecasPretas = 8;
 var jogadorAtual = ["B", "DB"];
 var contadorDamas = 0;
 var contDamas = 0;

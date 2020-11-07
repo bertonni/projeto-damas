@@ -13,6 +13,8 @@ var indicesjogadasPossiveis = [];
 var tabuleiro = array;
 var contadorDamas = 0;
 var apoio;
+var afogadas = 0;
+
 
 if (jogadorAtual[0] == "B") {
     document.getElementById("vez").setAttribute("src", "pecaBranca.png");
@@ -20,13 +22,23 @@ if (jogadorAtual[0] == "B") {
     document.getElementById("vez").setAttribute("src", "pecaPreta.png");
 }
 
-if(contDamas == 20){
+if (contDamas == 20) {
     alert("Empate por limite de jogadas sucessivas de damas sem captura!")
     document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
 }
 
-if(contForca == 20){
+if (contForca == 20) {
     alert('Empate por jogador com maior número de damas não venceu em vinte lances!');
+    document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
+}
+
+var pecasAfogadas = verificaPecasAfogadas(jogadorAtual);
+
+if (pecasAfogadas == totalPecasBrancas) {
+    alert('As brancas não possuem jogadas válidas!');
+    document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
+} else if (pecasAfogadas == totalPecasPretas) {
+    alert('As pretas não possuem jogadas válidas!');
     document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
 }
 
@@ -61,10 +73,10 @@ function getPeca(linha, coluna) {
     if (tabuleiro[linha][coluna] == "X") {
         return;
     }
-    
+
     caracterAtual = tabuleiro[linha][coluna];
-    
-    if(caracterAtual != " "){
+
+    if (caracterAtual != " ") {
         apoio = caracterAtual;
     }
 
@@ -81,10 +93,10 @@ function getPeca(linha, coluna) {
             var jogadaAtual = linha + "-" + coluna;
 
             var resultado = condicaoSucessiva(apoio);
-            var forcaMaior = condicaoMaiorForca(array ,jogadorAtual);
+            var forcaMaior = condicaoMaiorForca(array, jogadorAtual);
 
             pecaEliminada = eliminarPeca(linha, coluna, ultimaLinha, ultimaColuna, tabuleiro);
-            enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual, resultado , forcaMaior);
+            enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual, resultado, forcaMaior);
             return;
 
         } else if (jogadorAtual.indexOf(tabuleiro[linha][coluna]) != -1) {
@@ -131,11 +143,11 @@ function verificaSupEsquerdo(linha, coluna, caracterAtual) {
     }
 
     if ((linha - 1) < 0 || (coluna - 1) < 0 || jogadorAtual.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1) {
-        return;
+        return false;
     } else if (caracterAtual == "P" && oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 && tabuleiro[linha - 2][coluna - 2] == " ") {
         jogadasPossiveis.push((linha - 2) + "-" + (coluna - 2));
         return;
-    } else if(caracterAtual != "P"){
+    } else if (caracterAtual != "P") {
         if (tabuleiro[linha - 1][coluna - 1] == " ") {
             jogadasPossiveis.push((linha - 1) + "-" + (coluna - 1));
             if (caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1) {
@@ -156,11 +168,11 @@ function verificaSupDireito(linha, coluna, caracterAtual) {
     }
 
     if ((linha - 1) < 0 || (coluna + 1) > 7 || jogadorAtual.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1) {
-        return;
+        return false;
     } else if (caracterAtual == "P" && oponentes.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1 && tabuleiro[linha - 2][coluna + 2] == " ") {
         jogadasPossiveis.push((linha - 2) + "-" + (coluna + 2));
         return;
-    } else if(caracterAtual != "P"){
+    } else if (caracterAtual != "P") {
         if (tabuleiro[linha - 1][coluna + 1] == " ") {
             jogadasPossiveis.push((linha - 1) + "-" + (coluna + 1));
             if (caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1) {
@@ -180,11 +192,11 @@ function verificaInfEsquerdo(linha, coluna, caracterAtual) {
     }
 
     if ((linha + 1) > 7 || (coluna - 1) < 0 || jogadorAtual.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1) {
-        return;
+        return false;
     } else if (caracterAtual == "B" && oponentes.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1 && tabuleiro[linha + 2][coluna - 2] == " ") {
         jogadasPossiveis.push((linha + 2) + "-" + (coluna - 2));
         return;
-    } else if(caracterAtual != "B"){
+    } else if (caracterAtual != "B") {
         if (tabuleiro[linha + 1][coluna - 1] == " ") {
             jogadasPossiveis.push((linha + 1) + "-" + (coluna - 1));
             if (caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1) {
@@ -205,11 +217,11 @@ function verificaInfDireito(linha, coluna, caracterAtual) {
     }
 
     if ((linha + 1) > 7 || (coluna + 1) > 7 || jogadorAtual.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1) {
-        return;
+        return false;
     } else if (caracterAtual == "B" && oponentes.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1 && tabuleiro[linha + 2][coluna + 2] == " ") {
         jogadasPossiveis.push((linha + 2) + "-" + (coluna + 2));
         return;
-    } else if(caracterAtual != "B"){
+    } else if (caracterAtual != "B") {
         if (tabuleiro[linha + 1][coluna + 1] == " ") {
             jogadasPossiveis.push((linha + 1) + "-" + (coluna + 1));
             if (caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1) {
@@ -344,32 +356,55 @@ function enviaDadosServer(posicaoEliminada, destino, origem, totalPretas, totalB
     window.location.replace(url);
 }
 
-function condicaoSucessiva(apoio){
-     //20 lances sucessivos de Dama
-    if(apoio == "DB" || apoio == "DP"){
+function condicaoSucessiva(apoio) {
+    //20 lances sucessivos de Dama
+    if (apoio == "DB" || apoio == "DP") {
         return true;
     }
     return false;
 }
 
-function condicaoMaiorForca(array ,jogadorAtual){
+function condicaoMaiorForca(array, jogadorAtual) {
     let contDamaBranca = 0;
     let contDamaPreta = 0;
-    for(let i =0; i < array.length; i++){
-        for(let j= 0; j < array[i].length; j++){
-            if(array[i][j] == "DB"){
+    for (let i = 0; i < array.length; i++) {
+        for (let j = 0; j < array[i].length; j++) {
+            if (array[i][j] == "DB") {
                 contDamaBranca++;
-            } else if(array[i][j] == "DP"){
+            } else if (array[i][j] == "DP") {
                 contDamaPreta++;
             }
         }
     }
 
-    if(contDamaBranca - contDamaPreta >= 2){
+    if (contDamaBranca - contDamaPreta >= 2) {
         return 'BM';
-    } else if(contDamaPreta - contDamaBranca >= 2){
+    } else if (contDamaPreta - contDamaBranca >= 2) {
         return 'PM';
     } else {
         return 'O';
     }
+}
+
+function verificaPecasAfogadas(jogadorAtual) {
+
+    for (let i = 0; i < tabuleiro.length; i++) {
+        for (let j = 0; j < tabuleiro[i].length; j++) {
+            let supEsq = verificaSupEsquerdo(i, j, tabuleiro[i][j]);
+            let supDir = verificaSupDireito(i, j, tabuleiro[i][j]);
+            let infEsq = verificaInfEsquerdo(i, j, tabuleiro[i][j]);
+            let infDir = verificaInfDireito(i, j, tabuleiro[i][j]);
+
+            if ((tabuleiro[i][j] == "B" || tabuleiro[i][j] == "DB") && jogadorAtual.indexOf(tabuleiro[i][j] != -1)) {
+                if (supEsq == false && supDir == false && infDir == false && infEsq == false) {
+                    afogadas++;
+                }
+            } else if ((tabuleiro[i][j] == "P" || tabuleiro[i][j] == "DP") && jogadorAtual.indexOf(tabuleiro[i][j] != -1)) {
+                if (supEsq == false && supDir == false && infDir == false && infEsq == false) {
+                    afogadas++;
+                }
+            }
+        }
+    }
+    return afogadas;
 }
