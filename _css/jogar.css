@@ -12,13 +12,14 @@
 
 body{
     background-image: linear-gradient(to right, #29323c, #485563);
-    
+    margin-top: 6px;
 }
 
 :root {
     --bg-color: #0e0b16;
     --primary-color: #2196f3;
     --secondary-color: #255784;
+    --desistir-color: #f00a0a;
   }
 
 div.container{
@@ -30,7 +31,7 @@ div.container{
 div#jogadorVez{
     color: white;
     display: inline-block;
-    margin-left: 16.5cm;
+    margin-left: 15cm;
 }
 
 div#apoio{
@@ -53,7 +54,6 @@ div.tabuleiro{
     background-image: url(tabuleiro.svg);
     border: #6b481e solid 20px;
     border-radius: 7px;
-    
 }
 
 div.ladoEsquerdo{
@@ -156,6 +156,31 @@ img#reiniciar{
     position: absolute;
     right: 75px;
     top: 20px;
+}
+
+a#desistir{
+    position: relative;
+    display: flex;
+    width: 95px;
+    height: 20px;
+    margin-left: 30px;
+    margin-bottom: 9px;
+    background-color: #b42222;
+    border-radius: 7px;
+    font-family: Consolas;
+    letter-spacing: 3px;
+    color: #0e0b16;
+    text-decoration: none;
+    padding: 10px 15px;
+    text-align: center;
+    top: 5px;
+}
+
+a#desistir:hover{
+    background-color:#ad3838;
+    box-shadow: 0 0 20px var(--desistir-color), 0 0 80px var(--desistir-color),
+      0 0 160px var(--desistir-color), 0 0 320px var(--desistir-color);
+    transition-delay: 0.2s;
 }
 
 .pecaBranca{

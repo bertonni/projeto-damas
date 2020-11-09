@@ -461,3 +461,12 @@ function verificaPecasAfogadas(jogadorAtual) {
     console.log(afogadas)
     return afogadas;
 }
+
+function desistir() {
+    if (jogadorAtual[0] == "B") {
+        alert('As Pretas ganharam por desistência!');
+    } else{
+        alert('As Brancas ganharam por desistência!');
+    }
+    document.getElementsByClassName('tabuleiro')[0].classList.add('naoClicavel');
+}
