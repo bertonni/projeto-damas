@@ -10,6 +10,12 @@
     margin: 0;
 }
 
+:root {
+    --bg-color: #0e0b16;
+    --primary-color: #2196f3;
+    --secondary-color: #255784;
+  }
+
 body{
     font-family: 'Roboto', sans-serif;
     display: flex;
@@ -57,16 +63,25 @@ th, td {
     background-color:#3d80df
 }
 .btn{
-    font-size:14px;
-    text-transform:uppercase;
-    font-weight:700;
-    border:none;
-    padding:10px;
-    cursor:pointer;
-    text-decoration:none;
+    position: relative;
+    display: flex;
+    width: 70px;
+    height: 20px;
+    margin-left: 30px;
+    margin-bottom: 9px;
+    background-color: #255784;
+    border-radius: 7px;
+    font-family: Consolas;
+    letter-spacing: 3px;
+    color: #0e0b16;
+    text-decoration: none;
+    padding: 10px 15px;
+    text-align: center
+    
 }
-.btn-green{
-    background:#3d80df;
-    color:#fff;
-    box-shadow:0 5px 0 #538cdb;
+.btn:hover{
+    background-color:#5a94c7;
+    box-shadow: 0 0 20px var(--primary-color), 0 0 80px var(--primary-color),
+      0 0 160px var(--primary-color), 0 0 320px var(--primary-color);
+    transition-delay: 0.2s;
 }
