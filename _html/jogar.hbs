@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo de Damas</title>
     <link rel="icon" href="3716pecaDama.ico" type="image/x-icon">
     <link rel="stylesheet" href="jogar.css">
-    
+
 </head>
 <script>
     var novoTabuleiro = '{{dados.tabuleiro}}';
@@ -15,24 +16,30 @@
     var playerAtual = "{{dados.jogadorAtual}}";
     var contDamas = "{{dados.contadorDamas}}";
     var contForca = "{{dados.contadorForca}}";
-    playerAtual =playerAtual.split(",")
+    var jogPos = "{{dados.jogadasPossiveis}}";
+    var destino = "{{dados.destino}}";
+    jogPos = jogPos.split(",");
+
+    playerAtual = playerAtual.split(",")
     var array = [];
     var cont = 0;
     var tabuleiroDividido = novoTabuleiro.split(",");
 
-    for(let i = 0; i < 8; i++){
+    for (let i = 0; i < 8; i++) {
         array[i] = [];
-        for(let j = 0; j < 8; j++){
+        for (let j = 0; j < 8; j++) {
             array[i][j] = tabuleiroDividido[cont];
             cont++;
         }
     }
+
 </script>
+
 <body>
     <div id="jogadorVez">
         <div id="apoio">
             <a href="/jogar?reset=true"><img src="costas.png" id="reiniciar"></a>
-            <h3>Vez das:</h3> 
+            <h3>Vez das:</h3>
             <img src="pecaBranca.png" alt="" height="45px" width="45px" id="vez">
         </div>
     </div>
@@ -55,4 +62,5 @@
 
 </body>
 <script src="logica.js"></script>
+
 </html>

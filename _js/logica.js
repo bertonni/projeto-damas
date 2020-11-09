@@ -14,7 +14,24 @@ var tabuleiro = array;
 var contadorDamas = 0;
 var apoio;
 var afogadas = 0;
+var capturaSucessiva = false;
+var gambi = false;
 
+if (jogPos.length > 0 && jogPos[0] != "") {
+    gambi = true
+    contador = 1;
+    document.getElementById(destino).style.backgroundColor = "red";
+    for (let i = 0; i < jogPos.length; i++) {
+        document.getElementById(jogPos[i]).style.backgroundColor= "#49cc37";
+    }
+    for(let i = 0; i < tabuleiro.length ;i++){
+        for(let j = 0; j < tabuleiro[i].length; j++){
+            if(jogPos.indexOf(i + "-" + j) == -1){
+                document.getElementById(i + "-" + j).classList.add('naoClicavel');
+            }
+        }
+    }
+}
 
 if (jogadorAtual[0] == "B") {
     document.getElementById("vez").setAttribute("src", "pecaBranca.png");
@@ -32,15 +49,15 @@ if (contForca == 20) {
     document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
 }
 
-var pecasAfogadas = verificaPecasAfogadas(jogadorAtual);
+// var pecasAfogadas = verificaPecasAfogadas(jogadorAtual);
 
-if (pecasAfogadas == totalPecasBrancas) {
-    alert('As brancas não possuem jogadas válidas!');
-    document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
-} else if (pecasAfogadas == totalPecasPretas) {
-    alert('As pretas não possuem jogadas válidas!');
-    document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
-}
+// if (pecasAfogadas == totalPecasBrancas) {
+//     alert('As brancas não possuem jogadas válidas!');
+//     document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
+// } else if (pecasAfogadas == totalPecasPretas) {
+//     alert('As pretas não possuem jogadas válidas!');
+//     document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
+// }
 
 if (totalPecasBrancas == 0) {
     alert("O preto ganhou!");
@@ -82,20 +99,33 @@ function getPeca(linha, coluna) {
 
     if (contador == 1) {
         if (tabuleiro[linha][coluna] == " ") {
+            var gambi2 = false;
+            if(gambi){
+                ultimaJogada = destino;
+                gambi2 = true;
+            }
+            var stringDividida = ultimaJogada.split("-");
+            var ultimaLinha = stringDividida[0];
+            var ultimaColuna = stringDividida[1];
+            var jogadaAtual = linha + "-" + coluna;
+            var resultado = condicaoSucessiva(apoio);
+            var forcaMaior = condicaoMaiorForca(tabuleiro, jogadorAtual);
+            pecaEliminada = eliminarPeca(linha, coluna, ultimaLinha, ultimaColuna, tabuleiro);
+
+            if(pecaEliminada.length > 0){
+                capturaSucessiva = true;
+            }
+            if(gambi2){
+                enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual, resultado, forcaMaior);
+            }
             if (indicesjogadasPossiveis.indexOf(linha + "-" + coluna) == -1) {
                 document.getElementById(ultimaJogada).style.backgroundColor = "initial";
                 return;
             }
 
-            var stringDividida = ultimaJogada.split("-");
-            var ultimaLinha = stringDividida[0];
-            var ultimaColuna = stringDividida[1];
-            var jogadaAtual = linha + "-" + coluna;
 
-            var resultado = condicaoSucessiva(apoio);
-            var forcaMaior = condicaoMaiorForca(array, jogadorAtual);
 
-            pecaEliminada = eliminarPeca(linha, coluna, ultimaLinha, ultimaColuna, tabuleiro);
+           
             enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual, resultado, forcaMaior);
             return;
 
@@ -146,7 +176,7 @@ function verificaSupEsquerdo(linha, coluna, caracterAtual) {
         return false;
     } else if (caracterAtual == "P" && oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 && tabuleiro[linha - 2][coluna - 2] == " ") {
         jogadasPossiveis.push((linha - 2) + "-" + (coluna - 2));
-        return;
+        return true;
     } else if (caracterAtual != "P") {
         if (tabuleiro[linha - 1][coluna - 1] == " ") {
             jogadasPossiveis.push((linha - 1) + "-" + (coluna - 1));
@@ -171,7 +201,7 @@ function verificaSupDireito(linha, coluna, caracterAtual) {
         return false;
     } else if (caracterAtual == "P" && oponentes.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1 && tabuleiro[linha - 2][coluna + 2] == " ") {
         jogadasPossiveis.push((linha - 2) + "-" + (coluna + 2));
-        return;
+        return true;
     } else if (caracterAtual != "P") {
         if (tabuleiro[linha - 1][coluna + 1] == " ") {
             jogadasPossiveis.push((linha - 1) + "-" + (coluna + 1));
@@ -195,7 +225,7 @@ function verificaInfEsquerdo(linha, coluna, caracterAtual) {
         return false;
     } else if (caracterAtual == "B" && oponentes.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1 && tabuleiro[linha + 2][coluna - 2] == " ") {
         jogadasPossiveis.push((linha + 2) + "-" + (coluna - 2));
-        return;
+        return true;
     } else if (caracterAtual != "B") {
         if (tabuleiro[linha + 1][coluna - 1] == " ") {
             jogadasPossiveis.push((linha + 1) + "-" + (coluna - 1));
@@ -220,7 +250,7 @@ function verificaInfDireito(linha, coluna, caracterAtual) {
         return false;
     } else if (caracterAtual == "B" && oponentes.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1 && tabuleiro[linha + 2][coluna + 2] == " ") {
         jogadasPossiveis.push((linha + 2) + "-" + (coluna + 2));
-        return;
+        return true;
     } else if (caracterAtual != "B") {
         if (tabuleiro[linha + 1][coluna + 1] == " ") {
             jogadasPossiveis.push((linha + 1) + "-" + (coluna + 1));
@@ -352,7 +382,7 @@ function enviaDadosServer(posicaoEliminada, destino, origem, totalPretas, totalB
     let jogadorPeca = jogadorAtual[0];
     let jogadorDama = jogadorAtual[1];
 
-    var url = '/jogar?lineEli=' + linhaEliminada + '&colEli=' + colunaEliminada + '&dest=' + destino + '&orig=' + origem + '&totP=' + totalPretas + '&totB=' + totalBrancas + '&playerP=' + jogadorPeca + '&playerD=' + jogadorDama + '&resul=' + resultado + '&for=' + forcaMaior;
+    var url = '/jogar?lineEli=' + linhaEliminada + '&colEli=' + colunaEliminada + '&dest=' + destino + '&orig=' + origem + '&totP=' + totalPretas + '&totB=' + totalBrancas + '&playerP=' + jogadorPeca + '&playerD=' + jogadorDama + '&resul=' + resultado + '&for=' + forcaMaior + '&capSuc=' + capturaSucessiva;
     window.location.replace(url);
 }
 
@@ -386,25 +416,25 @@ function condicaoMaiorForca(array, jogadorAtual) {
     }
 }
 
-function verificaPecasAfogadas(jogadorAtual) {
+// function verificaPecasAfogadas(jogadorAtual) {
 
-    for (let i = 0; i < tabuleiro.length; i++) {
-        for (let j = 0; j < tabuleiro[i].length; j++) {
-            let supEsq = verificaSupEsquerdo(i, j, tabuleiro[i][j]);
-            let supDir = verificaSupDireito(i, j, tabuleiro[i][j]);
-            let infEsq = verificaInfEsquerdo(i, j, tabuleiro[i][j]);
-            let infDir = verificaInfDireito(i, j, tabuleiro[i][j]);
+//     for (let i = 0; i < tabuleiro.length; i++) {
+//         for (let j = 0; j < tabuleiro[i].length; j++) {
+//             let supEsq = verificaSupEsquerdo(i, j, tabuleiro[i][j]);
+//             let supDir = verificaSupDireito(i, j, tabuleiro[i][j]);
+//             let infEsq = verificaInfEsquerdo(i, j, tabuleiro[i][j]);
+//             let infDir = verificaInfDireito(i, j, tabuleiro[i][j]);
 
-            if ((tabuleiro[i][j] == "B" || tabuleiro[i][j] == "DB") && jogadorAtual.indexOf(tabuleiro[i][j] != -1)) {
-                if (supEsq == false && supDir == false && infDir == false && infEsq == false) {
-                    afogadas++;
-                }
-            } else if ((tabuleiro[i][j] == "P" || tabuleiro[i][j] == "DP") && jogadorAtual.indexOf(tabuleiro[i][j] != -1)) {
-                if (supEsq == false && supDir == false && infDir == false && infEsq == false) {
-                    afogadas++;
-                }
-            }
-        }
-    }
-    return afogadas;
-}
+//             if ((tabuleiro[i][j] == "B" || tabuleiro[i][j] == "DB") && jogadorAtual.indexOf(tabuleiro[i][j] != -1)) {
+//                 if (supEsq == false && supDir == false && infDir == false && infEsq == false) {
+//                     afogadas++;
+//                 }
+//             } else if ((tabuleiro[i][j] == "P" || tabuleiro[i][j] == "DP") && jogadorAtual.indexOf(tabuleiro[i][j] != -1)) {
+//                 if (supEsq == false && supDir == false && infDir == false && infEsq == false) {
+//                     afogadas++;
+//                 }
+//             }
+//         }
+//     }
+//     return afogadas;
+// }
