@@ -10,6 +10,7 @@
 
 </head>
 <script>
+    //Recebimento dos dados do servidor
     var novoTabuleiro = '{{dados.tabuleiro}}';
     var totalBrancas = "{{dados.totalBrancas}}";
     var totalPretas = "{{dados.totalPretas}}";
@@ -21,6 +22,8 @@
     jogPos = jogPos.split(",");
 
     playerAtual = playerAtual.split(",")
+
+    //Transformar o tabuleiro do servidor que vem como string em um array bidimensional
     var array = [];
     var cont = 0;
     var tabuleiroDividido = novoTabuleiro.split(",");

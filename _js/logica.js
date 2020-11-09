@@ -1,4 +1,4 @@
-
+//Atribuição de valores de variáveis vindas de jogar.hbs && declaração de variáveis
 var contador = 0;
 var ultimaJogada = "";
 var jogadorAtual = playerAtual
@@ -15,15 +15,19 @@ var contadorDamas = 0;
 var apoio;
 var afogadas = 0;
 var capturaSucessiva = false;
-var gambi = false;
+var transicao = false;
 
+//Verifica se há captura sucessiva
 if (jogPos.length > 0 && jogPos[0] != "") {
-    gambi = true
+    //Transição = true && contador = 1 para continuar clicando em jogadas sucessivas
+    transicao = true
     contador = 1;
     document.getElementById(destino).style.backgroundColor = "red";
+    //Acende em verde as capturas possíveis
     for (let i = 0; i < jogPos.length; i++) {
         document.getElementById(jogPos[i]).style.backgroundColor = "#49cc37";
     }
+    //Deixa todas as outras peças (exceto as capturas sucessivas) não clicavéis
     for (let i = 0; i < tabuleiro.length; i++) {
         for (let j = 0; j < tabuleiro[i].length; j++) {
             if (jogPos.indexOf(i + "-" + j) == -1) {
@@ -33,28 +37,29 @@ if (jogPos.length > 0 && jogPos[0] != "") {
     }
 }
 
+//Faz a troca da imagem referente ao jogador da vez
 if (jogadorAtual[0] == "B") {
     document.getElementById("vez").setAttribute("src", "pecaBranca.png");
 } else if (jogadorAtual[0] == "P") {
     document.getElementById("vez").setAttribute("src", "pecaPreta.png");
 }
 
+//Condição de empate (jogadas sucessivas de dama sem captura!)
 if (contDamas == 20) {
     alert("Empate por limite de jogadas sucessivas de damas sem captura!")
     document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
 }
 
+//Condição de empate de "maior força"
 if (contForca == 20) {
     alert('Empate por jogador com maior número de damas não venceu em vinte lances!');
     document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
 }
 
+//Faz a verificação de peças afogadas no tabuleiro
 var pecasAfogadas = verificaPecasAfogadas(jogadorAtual);
 
-console.log('afogadas', pecasAfogadas);
-console.log('pretas', totalPecasPretas);
-console.log('brancas', totalPecasBrancas);
-
+//Condição de empate(peças afogadas)
 if (pecasAfogadas == totalPecasBrancas && jogadorAtual[0] == "B" && totalPecasBrancas != 0) {
     alert('As brancas não possuem jogadas válidas!');
     document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
@@ -63,6 +68,7 @@ if (pecasAfogadas == totalPecasBrancas && jogadorAtual[0] == "B" && totalPecasBr
     document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
 }
 
+//Condição de vitória (todas as peças capturadas)
 if (totalPecasBrancas == 0) {
     alert("O preto ganhou!");
     document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
@@ -71,64 +77,74 @@ if (totalPecasBrancas == 0) {
     document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
 }
 
+//Passa a quantidade de peças para o elemento HTML
 document.getElementById("quantPecasBrancas").innerHTML = totalPecasBrancas;
 document.getElementById("quantPecasPretas").innerHTML = totalPecasPretas;
 
+//Função ativada no evento onclick, para pegar a linha e coluna;
 function getPeca(linha, coluna) {
-
-
+    //Apagar jogadas possíveis(em caso de houver acesa)
     for (var i = 0; i < jogadasPossiveis.length; i++) {
         elemento = document.getElementById(jogadasPossiveis[i]);
         elemento.style.backgroundColor = "initial";
     }
 
+    //Array setado para posição inicial(zerado)
     jogadasPossiveis = [];
 
+    //Define o oponente usando operador ternário
     oponente[0] = jogadorAtual[0] == "B" ? "P" : "B";
     oponente[1] = jogadorAtual[1] == "DB" ? "DP" : "DB";
 
-
+    //Verifica se a peça clicada é um oponente e sai da função
     if (oponente.indexOf(tabuleiro[linha][coluna]) != -1) {
         return;
     }
+    //Verifica se a div clicada é uma casa branca e sai da função 
     if (tabuleiro[linha][coluna] == "X") {
         return;
     }
 
+    //Recebe o valor da posição clicada
     caracterAtual = tabuleiro[linha][coluna];
 
+    //Apoio recebe um caracter atual válido para usar na função condiçãoSucessivas
     if (caracterAtual != " ") {
         apoio = caracterAtual;
     }
 
+    //Quando contador é igual a 1
     if (contador == 1) {
+        //Verifica se a div clicada é um espaço em branco
         if (tabuleiro[linha][coluna] == " ") {
-            var gambi2 = false;
-            if (gambi) {
+            var transicao2 = false;
+            if (transicao) {
                 ultimaJogada = destino;
-                gambi2 = true;
+                transicao2 = true;
             }
+            //Split de linha e coluna que está em ultimaJogada
             var stringDividida = ultimaJogada.split("-");
             var ultimaLinha = stringDividida[0];
             var ultimaColuna = stringDividida[1];
             var jogadaAtual = linha + "-" + coluna;
+
+            //Chamada de uma condições de empate
             var resultado = condicaoSucessiva(apoio);
             var forcaMaior = condicaoMaiorForca(tabuleiro, jogadorAtual);
+             //Chamada da função eliminarPeca
             pecaEliminada = eliminarPeca(linha, coluna, ultimaLinha, ultimaColuna, tabuleiro);
 
+            //Se o retorno da função pecaEliminada for maior que 0 houve captura
             if (pecaEliminada.length > 0) {
                 capturaSucessiva = true;
             }
-            if (gambi2) {
+            if (transicao2) {
                 enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual, resultado, forcaMaior);
             }
             if (indicesjogadasPossiveis.indexOf(linha + "-" + coluna) == -1) {
                 document.getElementById(ultimaJogada).style.backgroundColor = "initial";
                 return;
             }
-
-
-
 
             enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual, resultado, forcaMaior);
             return;
@@ -144,22 +160,28 @@ function getPeca(linha, coluna) {
 
             ultimaJogada = linha + "-" + coluna;
         }
+       //Quando contador é 0 (primeiro click)
     } else if (contador == 0) {
+        //Verifica se o click não é um espaço em branco (1°)
         if (tabuleiro[linha][coluna] == " ") {
             return;
         }
-
+        //Troca o background da peça selecionada para vermelho
         document.getElementById(linha + "-" + coluna).style.backgroundColor = "red";
 
+        //Chama as quatro verificações de jogadas possíveis
         verificaSupEsquerdo(linha, coluna, caracterAtual);
         verificaSupDireito(linha, coluna, caracterAtual);
         verificaInfEsquerdo(linha, coluna, caracterAtual);
         verificaInfDireito(linha, coluna, caracterAtual);
 
+        //Incrementa o contador e coloca o valor do ultimo click em ultimaJogada
         contador++
         ultimaJogada = linha + "-" + coluna;
     }
+    //Zera o array
     indicesjogadasPossiveis = [];
+    //Percorre o array e acende as jogadas possíveis
     for (var i = 0; i < jogadasPossiveis.length; i++) {
         elemento = document.getElementById(jogadasPossiveis[i]);
         elemento.style.backgroundColor = "#49cc37";
@@ -168,7 +190,7 @@ function getPeca(linha, coluna) {
 }
 
 function verificaSupEsquerdo(linha, coluna, caracterAtual) {
-
+    //Define os oponentes com um operador ternário
     let oponentes = [];
     if (caracterAtual == "B" || caracterAtual == "DB") {
         oponentes = ["P", "DP"];
@@ -176,18 +198,23 @@ function verificaSupEsquerdo(linha, coluna, caracterAtual) {
         oponentes = ["B", "DB"];
     }
 
+    //Condições de parada da função recursiva
     if ((linha - 1) < 0 || (coluna - 1) < 0 || jogadorAtual.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 || (caracterAtual == "P" && tabuleiro[linha - 1][coluna - 1] == " ")) {
         return false;
+       //Verificação de captura para trás de uma peca Preta
     } else if (caracterAtual == "P" && oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 && (linha - 2) >= 0 && (coluna - 2) >= 0 && tabuleiro[linha - 2][coluna - 2] == " ") {
         jogadasPossiveis.push((linha - 2) + "-" + (coluna - 2));
         return true;
+        //Verificação de jogada possível de qualquer peca diferente de P
     } else if (caracterAtual != "P") {
         if (tabuleiro[linha - 1][coluna - 1] == " ") {
             jogadasPossiveis.push((linha - 1) + "-" + (coluna - 1));
+            //Verifica se é uma peça branca para parar a função recursiva
             if (caracterAtual != "DB" && caracterAtual != "DP" || oponentes.indexOf(tabuleiro[linha][coluna]) != -1) {
                 return true;
             }
         }
+        //Chama a própria função em caso da peça ser uma dama
         return verificaSupEsquerdo((linha - 1), (coluna - 1), caracterAtual);
     }
 
@@ -267,6 +294,7 @@ function verificaInfDireito(linha, coluna, caracterAtual) {
     }
 }
 
+//Função para eliminar a peça
 function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
 
     linhaDest = Number(linhaDest);
@@ -363,6 +391,7 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
     return posicaoEliminar;
 }
 
+//Transforma a peça em dama em caso da condição ser verdadeira
 function transformaDama(linha, coluna, jogadorAtual) {
     if (jogadorAtual == "B") {
         tabuleiro[linha][coluna] = "DB";
@@ -372,6 +401,7 @@ function transformaDama(linha, coluna, jogadorAtual) {
     }
 }
 
+//Envia os dados pro servidor 
 function enviaDadosServer(posicaoEliminada, destino, origem, totalPretas, totalBrancas, jogadorAtual, resultado, forcaMaior) {
     let linhaEliminada;
     let colunaEliminada;
@@ -398,6 +428,7 @@ function condicaoSucessiva(apoio) {
     return false;
 }
 
+//Condição de empate ('Maior força')
 function condicaoMaiorForca(array, jogadorAtual) {
     let contDamaBranca = 0;
     let contDamaPreta = 0;
@@ -420,6 +451,7 @@ function condicaoMaiorForca(array, jogadorAtual) {
     }
 }
 
+//Percorre o tabuleiro e verifica quantas peças afogadas existem
 function verificaPecasAfogadas(jogadorAtual) {
     for (let i = 0; i < tabuleiro.length; i++) {
         for (let j = 0; j < tabuleiro[i].length; j++) {
@@ -434,11 +466,6 @@ function verificaPecasAfogadas(jogadorAtual) {
                 infEsq = verificaInfEsquerdo(i, j, tabuleiro[i][j]);
                 infDir = verificaInfDireito(i, j, tabuleiro[i][j]);
 
-                console.log(`supEsq ${i}-${j}`, supEsq);
-                console.log(`supDir ${i}-${j}`, supDir);
-                console.log(`infEsq ${i}-${j}`, infEsq);
-                console.log(`infDir ${i}-${j}`, infDir);
-                console.log('-----------------');
                 if (supEsq == false && supDir == false && infDir == false && infEsq == false) {
                     afogadas++;
                 }
@@ -447,21 +474,17 @@ function verificaPecasAfogadas(jogadorAtual) {
                 supDir = verificaSupDireito(i, j, tabuleiro[i][j]);
                 infEsq = verificaInfEsquerdo(i, j, tabuleiro[i][j]);
                 infDir = verificaInfDireito(i, j, tabuleiro[i][j]);
-                console.log(`supEsq ${i}-${j}`, supEsq);
-                console.log(`supDir ${i}-${j}`, supDir);
-                console.log(`infEsq ${i}-${j}`, infEsq);
-                console.log(`infDir ${i}-${j}`, infDir);
-                console.log('-----------------');
+
                 if (supEsq == false && supDir == false && infDir == false && infEsq == false) {
                     afogadas++;
                 }
             }
         }
     }
-    console.log(afogadas)
     return afogadas;
 }
 
+//Função de desistência que é chamada caso o botão seja apertado
 function desistir() {
     if (jogadorAtual[0] == "B") {
         alert('As Pretas ganharam por desistência!');

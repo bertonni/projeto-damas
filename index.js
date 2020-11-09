@@ -1,16 +1,20 @@
 const fs = require('fs'); //file system
-const express = require('express');
-const hbs = require('hbs');
+const express = require('express'); //módulo express
+const hbs = require('hbs'); //handlebars
 const app = express();
-const porta = 3000;
+const porta = 3000; //Define a porta a ser usada no localhost
 
+//Inclui os diretórios na "raiz" do servidor
 app.use(express.static(__dirname + '/_css'));
 app.use(express.static(__dirname + '/_img'));
 app.use(express.static(__dirname + '/_js'));
 
+//Define o tipo de view(hbs)
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/_html');
 
+
+//Define o tabuleiro 
 var tabuleiro = [
     ["X", "P", "X", "P", "X", "P", "X", "P"],
     ["P", "X", "P", "X", "P", "X", "P", "X"],
@@ -22,7 +26,7 @@ var tabuleiro = [
     ["B", "X", "B", "X", "B", "X", "B", "X"],
 ]
 
-
+//Declaração de variáveis
 var totalPecasBrancas = 12;
 var totalPecasPretas = 12;
 var jogadorAtual = ["B", "DB"];
@@ -33,6 +37,7 @@ var contForca = 0;
 var jogadasPossiveis = [];
 var destino = 'x';
 
+//Criação de um objeto dados que vai ser retornado ao cliente
 var dados = {
     tabuleiro: tabuleiro,
     totalBrancas: totalPecasBrancas,
@@ -44,8 +49,10 @@ var dados = {
     destino: destino
 }
 
+//Rota principal que vai para o jogar.html
 app.get('/', function (req, res) {
     fs.readFile('index.html', 'utf-8', function (err, data) {
+        //Seta o tabuleiro 
         tabuleiro = [
             ["X", "P", "X", "P", "X", "P", "X", "P"],
             ["P", "X", "P", "X", "P", "X", "P", "X"],
@@ -56,9 +63,7 @@ app.get('/', function (req, res) {
             ["X", "B", "X", "B", "X", "B", "X", "B"],
             ["B", "X", "B", "X", "B", "X", "B", "X"],
         ]
-
-
-
+        //Reseta dados para seu estado original
         dados = {
             tabuleiro: tabuleiro,
             totalBrancas: totalPecasBrancas,
@@ -69,34 +74,40 @@ app.get('/', function (req, res) {
             jogadasPossiveis: jogadasPossiveis,
             destino: destino
         }
+        //Envia os dados pro cliente
         res.send(data);
     });
 });
 
+//Rota para a página de regras
 app.get('/regras', function (req, res) {
     fs.readFile('_html/regras.html', 'utf-8', function (err, data) {
         res.send(data)
     });
 });
 
+//Rota para a página sobre
 app.get('/sobre', function (req, res) {
     fs.readFile('_html/sobre.html', 'utf-8', function (err, data) {
         res.send(data)
     });
 });
 
+//Rota para a página de configurações
 app.get('/configuracoes', function (req, res) {
     fs.readFile('_html/configuracoes.html', 'utf-8', function (err, data) {
         res.send(data)
     });
 });
 
+//Carrega o conteúdo do iframe que está na página de regras
 app.get('/iframe', function (req, res) {
     fs.readFile('_html/iframe_regras.html', 'utf-8', function (err, data) {
         res.send(data)
     });
 });
 
+//Rota de reset do tabuleiro e suas variáveis
 app.get('/reset', function (req, res) {
 
     tabuleiro = [
@@ -121,11 +132,15 @@ app.get('/reset', function (req, res) {
         destino: destino
     }
 
+    //Redireciona para a rota jogar
     res.redirect('/jogar')
 });
 
+//Rota jogar onde teremos o tabuleiro e o jogo
 app.get('/jogar', function (req, res) {
 
+
+    //Criação das div's do tabuleiro
     var quadrado = ``;
 
     for (var i = 0; i <= 7; i++) {
@@ -145,13 +160,15 @@ app.get('/jogar', function (req, res) {
     }
     data = quadrado
 
-
+    //Renderiza a view passando as váriaveis (data, dados)
     res.render('jogar', { data, dados });
 });
 
+//Recebe os dados do cliente (quando há uma jogada) e tratar esses dados
 app.get('/tratar/:lineEli/:colEli/:dest/:orig/:totP/:totB/:playerP/:playerD/:result/:for/:capSuc', function (req, res) {
-    console.log(req.params.colEli);
+    //Se lineEli for diferente de undefined houve uma requisição do cliente
     if (req.params.lineEli != undefined) {
+        //Recebimento de variáveis do servidor para variáveis para uso 
         jogadasPossiveis = [];
         let oponente = [];
         oponente[0] = req.params.playerP == "B" ? "P" : "B";
@@ -167,14 +184,13 @@ app.get('/tratar/:lineEli/:colEli/:dest/:orig/:totP/:totB/:playerP/:playerD/:res
         let lineEli = req.params.lineEli;
         let colEli = req.params.colEli;
         let player = [];
-        // player[0] = playerP;
-        // player[1] = playerD;
+        //Jogador atual
         let atual = []
         atual[0] = req.params.playerP;
         atual[1] = req.params.playerD;
 
-        //Condição empate (20 lances de Dama sucessivo)
-        if (req.params.resul == "true") {
+        //Condição empate (20 lances de Dama sucessivos)
+        if (req.params.result == "true") {
             contDamas++;
         } else {
             contDamas = 0;
