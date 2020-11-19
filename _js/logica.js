@@ -44,18 +44,6 @@ if (jogadorAtual[0] == "B") {
   document.getElementById("vez").setAttribute("src", "pecaPreta.png");
 }
 
-//Condição de empate (jogadas sucessivas de dama sem captura!)
-if (contDamas == 20) {
-  alert("Empate por limite de jogadas sucessivas de damas sem captura!")
-  document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
-}
-
-//Condição de empate de "maior força"
-if (contForca == 20) {
-  alert('Empate por jogador com maior número de damas não venceu em vinte lances!');
-  document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
-}
-
 //Faz a verificação de peças afogadas no tabuleiro
 var pecasAfogadas = verificaPecasAfogadas(jogadorAtual);
 
@@ -67,19 +55,6 @@ if (pecasAfogadas == totalPecasBrancas && jogadorAtual[0] == "B" && totalPecasBr
   alert('As pretas não possuem jogadas válidas!');
   document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
 }
-
-//Condição de vitória (todas as peças capturadas)
-if (totalPecasBrancas == 0) {
-  alert("O preto ganhou!");
-  document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
-} else if (totalPecasPretas == 0) {
-  alert("O branco ganhou!");
-  document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
-}
-
-//Passa a quantidade de peças para o elemento HTML
-document.getElementById("quantPecasBrancas").innerHTML = totalPecasBrancas;
-document.getElementById("quantPecasPretas").innerHTML = totalPecasPretas;
 
 //Função ativada no evento onclick, para pegar a linha e coluna;
 function getPeca(linha, coluna) {
@@ -309,20 +284,24 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
       //Foi pra esquerda superior
       if (tabuleiro[linhaOrig - 1][colunaOrig - 1] === "B" || tabuleiro[linhaOrig - 1][colunaOrig - 1] === "DB") {
         totalPecasBrancas--;
-      } else {
+        posicaoEliminar[0] = linhaOrig - 1;
+        posicaoEliminar[1] = colunaOrig - 1;
+      } else if (tabuleiro[linhaOrig - 1][colunaOrig - 1] === "P" || tabuleiro[linhaOrig - 1][colunaOrig - 1] === "DP") {
         totalPecasPretas--;
+        posicaoEliminar[0] = linhaOrig - 1;
+        posicaoEliminar[1] = colunaOrig - 1;
       }
-      posicaoEliminar[0] = linhaOrig - 1;
-      posicaoEliminar[1] = colunaOrig - 1;
       //Foi pra direita superior
     } else if (colunaOrig - colunaDest == -2) {
       if (tabuleiro[linhaOrig - 1][colunaOrig + 1] === "B" || tabuleiro[linhaOrig - 1][colunaOrig + 1] === "DB") {
         totalPecasBrancas--;
-      } else {
+        posicaoEliminar[0] = linhaOrig - 1;
+        posicaoEliminar[1] = colunaOrig + 1;
+      } else if (tabuleiro[linhaOrig - 1][colunaOrig + 1] === "P" || tabuleiro[linhaOrig - 1][colunaOrig + 1] === "DP") {
         totalPecasPretas--;
+        posicaoEliminar[0] = linhaOrig - 1;
+        posicaoEliminar[1] = colunaOrig + 1;
       }
-      posicaoEliminar[0] = linhaOrig - 1;
-      posicaoEliminar[1] = colunaOrig + 1;
     }
     //Foi pra baixo
   } else if (linhaOrig - linhaDest == -2) {
@@ -330,20 +309,24 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
     if (colunaOrig - colunaDest == 2) {
       if (tabuleiro[linhaOrig + 1][colunaOrig - 1] === "B" || tabuleiro[linhaOrig + 1][colunaOrig - 1] === "DB") {
         totalPecasBrancas--;
-      } else {
+        posicaoEliminar[0] = linhaOrig + 1;
+        posicaoEliminar[1] = colunaOrig - 1;
+      } else if (tabuleiro[linhaOrig + 1][colunaOrig - 1] === "P" || tabuleiro[linhaOrig + 1][colunaOrig - 1] === "DP") {
         totalPecasPretas--;
+        posicaoEliminar[0] = linhaOrig + 1;
+        posicaoEliminar[1] = colunaOrig - 1;
       }
-      posicaoEliminar[0] = linhaOrig + 1;
-      posicaoEliminar[1] = colunaOrig - 1;
       //Direita inferior
     } else if (colunaOrig - colunaDest == -2) {
       if (tabuleiro[linhaOrig + 1][colunaOrig + 1] === "B" || tabuleiro[linhaOrig + 1][colunaOrig + 1] === "DB") {
         totalPecasBrancas--;
-      } else {
+        posicaoEliminar[0] = linhaOrig + 1;
+        posicaoEliminar[1] = colunaOrig + 1;
+      } else if (tabuleiro[linhaOrig + 1][colunaOrig + 1] === "P" || tabuleiro[linhaOrig + 1][colunaOrig + 1] === "DP") {
         totalPecasPretas--;
+        posicaoEliminar[0] = linhaOrig + 1;
+        posicaoEliminar[1] = colunaOrig + 1;
       }
-      posicaoEliminar[0] = linhaOrig + 1;
-      posicaoEliminar[1] = colunaOrig + 1;
     }
     //Dama foi pra cima
   } else if (linhaOrig - linhaDest > 2) {
