@@ -201,3 +201,28 @@ a#desistir:hover{
 .naoClicavel{
     pointer-events: none;
 }
+
+.winner, .draw {
+  position: absolute;
+  width: 400px;
+  height: 150px;
+  border: 15px double burlywood;
+  background-color: #485563;
+  display: flex;
+  justify-content: center;
+  flex-flow: wrap;
+  align-items: center;
+  z-index: 100;
+}
+
+.winner #winner, #win-condition {
+  color: white;
+  font-size: 25px;
+  text-align: center;
+}
+
+.draw #draw, #draw-condition {
+  color: white;
+  font-size: 25px;
+  text-align: center;
+}
