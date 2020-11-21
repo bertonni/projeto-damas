@@ -38,6 +38,7 @@ var jogadasPossiveis = [];
 var destino = 'x';
 var hasWinner = false;
 var hasDraw = false;
+var giveUp = false;
 
 var winner = {
   name: null,
@@ -45,6 +46,11 @@ var winner = {
 }
 
 var draw = {
+  condition: null
+}
+
+var giveup = {
+  winner: null,
   condition: null
 }
 
@@ -145,13 +151,19 @@ app.get('/reset', function (req, res) {
 
   hasWinner = false;
   hasDraw = false;
+  giveUp = false;
 
   winner = {
     name: null,
     condition: null
   }
-  
+
   draw = {
+    condition: null
+  }
+
+  giveup = {
+    winner: null,
     condition: null
   }
 
@@ -159,11 +171,29 @@ app.get('/reset', function (req, res) {
   res.redirect('/jogar')
 });
 
+app.get('/giveup/:currentPlayer', function (req, res) {
+  giveUp = true;
+  giveup = {
+    winner: req.params.currentPlayer === "B" ? "As peças Pretas venceram o jogo! Parabéns!" : "As peças Brancas venceram o jogo! Parabéns!",
+    condition: "O adversário desistiu do jogo!"
+  }
+  res.redirect('/jogar');
+})
+
+app.get('/afogadas/:player', function (req, res) {
+  hasWinner = true;
+  winner = {
+    name: req.params.player === "B" ? "As peças Pretas venceram o jogo! Parabéns!" : "As peças Brancas venceram o jogo! Parabéns!",
+    condition: "O adversário não possuia jogadas válidas!"
+  }
+  res.redirect('/jogar');
+});
+
 //Rota jogar onde teremos o tabuleiro e o jogo
 app.get('/jogar', function (req, res) {
 
   //Criação das div's do tabuleiro
-  var quadrado = hasWinner || hasDraw ? `<div class="tabuleiro naoClicavel">` : `<div class="tabuleiro">`;
+  var quadrado = hasWinner || hasDraw || giveUp ? `<div class="tabuleiro naoClicavel">` : `<div class="tabuleiro">`;
   var currentPlayer = ``;
 
   for (var i = 0; i <= 7; i++) {
@@ -183,12 +213,14 @@ app.get('/jogar', function (req, res) {
   }
   quadrado += `</div>`;
 
+  let giveupButton = hasWinner || hasDraw || giveUp ? `<a id='desistir' class='naoClicavel' href='#' onclick='desistir();'>Desistir</a>` : `<a id='desistir' href='#' onclick="desistir();">Desistir</a>`;
+
   currentPlayer = dados.jogadorAtual[0] === "B" ? `<img src="pecaBranca.png" alt="" height="45px" width="45px" id="vez" />` : `<img src="pecaPreta.png" alt="" height="45px" width="45px" id="vez" />`;
 
 
   let board = quadrado
   //Renderiza a view passando as váriaveis para o template 'jogar'
-  res.render('jogar', { board, dados, currentPlayer, hasWinner, hasDraw, winner, draw });
+  res.render('jogar', { board, dados, currentPlayer, hasWinner, hasDraw, giveUp, winner, draw, giveup, giveupButton });
 });
 
 //Recebe os dados do cliente (quando há uma jogada) e tratar esses dados

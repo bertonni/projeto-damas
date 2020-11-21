@@ -19,6 +19,7 @@
   var contForca = "{{dados.contadorForca}}";
   var jogPos = "{{dados.jogadasPossiveis}}";
   var destino = "{{dados.destino}}";
+  var winner = {{hasWinner}};
   jogPos = jogPos.split(",");
 
   playerAtual = playerAtual.split(",")
@@ -44,7 +45,8 @@
       <a href="/reset"><img src="costas.png" id="reiniciar"></a>
       <h3>Vez das:</h3>
       {{{ currentPlayer }}}
-      <a id='desistir' href='#' onclick="desistir();">Desistir</a>
+      {{{ giveupButton }}}
+      {{!-- <a id='desistir' href='#' onclick="desistir();">Desistir</a> --}}
     </div>
   </div>
   <div class="container">
@@ -58,7 +60,7 @@
 
     {{#if hasWinner}}
     <div class="winner">
-      <p id="winner">As peças <strong> {{ winner.name }} </strong> ganharam o jogo! Parabéns!</p>
+      <p id="winner">{{ winner.name }}</p>
       <p id="win-condition">{{ winner.condition }}</p>
     </div>
     {{/if}}
@@ -66,6 +68,12 @@
     <div class="draw">
       <p id="draw">O jogo terminou empatado!</p>
       <p id="draw-condition">{{ draw.condition }}</p>
+    </div>
+    {{/if}}
+    {{#if giveUp}}
+    <div class="giveup">
+      <p id="giveup">{{ giveup.winner }}</p>
+      <p id="giveup-condition">{{ giveup.condition }}</p>
     </div>
     {{/if}}
     <div class="ladoDireito">

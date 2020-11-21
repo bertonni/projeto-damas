@@ -202,7 +202,7 @@ a#desistir:hover{
     pointer-events: none;
 }
 
-.winner, .draw {
+.winner, .draw, .giveup {
   position: absolute;
   width: 400px;
   height: 150px;
@@ -215,13 +215,7 @@ a#desistir:hover{
   z-index: 100;
 }
 
-.winner #winner, #win-condition {
-  color: white;
-  font-size: 25px;
-  text-align: center;
-}
-
-.draw #draw, #draw-condition {
+.winner #winner, #win-condition, .draw #draw, #draw-condition, .giveup #giveup, #giveup-condition {
   color: white;
   font-size: 25px;
   text-align: center;

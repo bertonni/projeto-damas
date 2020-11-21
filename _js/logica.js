@@ -17,6 +17,7 @@ var afogadas = 0;
 var capturaSucessiva = false;
 var transicao = false;
 
+
 //Verifica se há captura sucessiva
 if (jogPos.length > 0 && jogPos[0] != "") {
   //Transição = true && contador = 1 para continuar clicando em jogadas sucessivas
@@ -48,12 +49,10 @@ if (jogadorAtual[0] == "B") {
 var pecasAfogadas = verificaPecasAfogadas(jogadorAtual);
 
 //Condição de empate(peças afogadas)
-if (pecasAfogadas == totalPecasBrancas && jogadorAtual[0] == "B" && totalPecasBrancas != 0) {
-  alert('As brancas não possuem jogadas válidas!');
-  document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
-} else if (pecasAfogadas == totalPecasPretas && jogadorAtual[0] == "P" && totalPecasPretas != 0) {
-  alert('As pretas não possuem jogadas válidas!');
-  document.getElementsByClassName("tabuleiro")[0].classList.add("naoClicavel");
+if (pecasAfogadas == totalPecasBrancas && jogadorAtual[0] == "B" && totalPecasBrancas != 0 && !winner) {
+  window.location.replace(`/afogadas/B`);
+} else if (pecasAfogadas == totalPecasPretas && jogadorAtual[0] == "P" && totalPecasPretas != 0 && !winner) {
+  window.location.replace(`/afogadas/P`);
 }
 
 //Função ativada no evento onclick, para pegar a linha e coluna;
@@ -106,22 +105,22 @@ function getPeca(linha, coluna) {
       //Chamada de uma condições de empate
       var resultado = condicaoSucessiva(apoio);
       var forcaMaior = condicaoMaiorForca(tabuleiro, jogadorAtual);
+      var pecasAfogadas = verificaPecasAfogadas(jogadorAtual);
       //Chamada da função eliminarPeca
       pecaEliminada = eliminarPeca(linha, coluna, ultimaLinha, ultimaColuna, tabuleiro);
-
       //Se o retorno da função pecaEliminada for maior que 0 houve captura
       if (pecaEliminada.length > 0) {
         capturaSucessiva = true;
       }
       if (transicao2) {
-        enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual, resultado, forcaMaior, capturaSucessiva);
+        enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual, resultado, forcaMaior, capturaSucessiva, pecasAfogadas);
       }
       if (indicesjogadasPossiveis.indexOf(linha + "-" + coluna) == -1) {
         document.getElementById(ultimaJogada).style.backgroundColor = "initial";
         return;
       }
 
-      enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual, resultado, forcaMaior, capturaSucessiva);
+      enviaDadosServer(pecaEliminada, jogadaAtual, ultimaJogada, totalPecasPretas, totalPecasBrancas, jogadorAtual, resultado, forcaMaior, capturaSucessiva, pecasAfogadas);
       return;
 
     } else if (jogadorAtual.indexOf(tabuleiro[linha][coluna]) != -1) {
@@ -174,7 +173,7 @@ function verificaSupEsquerdo(linha, coluna, caracterAtual) {
   }
 
   //Condições de parada da função recursiva
-  if ((linha - 1) < 0 || (coluna - 1) < 0 || jogadorAtual.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 || (caracterAtual == "P" && tabuleiro[linha - 1][coluna - 1] == " ")) {
+  if ((linha - 1) < 0 || (coluna - 1) < 0 || jogadorAtual.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 || (caracterAtual == "P" && tabuleiro[linha - 1][coluna - 1] == " ") || (oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 && ((linha - 2) < 0 || (coluna - 2) < 0))) {
     return false;
     //Verificação de captura para trás de uma peca Preta
   } else if (caracterAtual == "P" && oponentes.indexOf(tabuleiro[linha - 1][coluna - 1]) != -1 && (linha - 2) >= 0 && (coluna - 2) >= 0 && tabuleiro[linha - 2][coluna - 2] == " ") {
@@ -203,7 +202,7 @@ function verificaSupDireito(linha, coluna, caracterAtual) {
     oponentes = ["B", "DB"];
   }
 
-  if ((linha - 1) < 0 || (coluna + 1) > 7 || jogadorAtual.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1 || (caracterAtual == "P" && tabuleiro[linha - 1][coluna + 1] == " ")) {
+  if ((linha - 1) < 0 || (coluna + 1) > 7 || jogadorAtual.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1 || (caracterAtual == "P" && tabuleiro[linha - 1][coluna + 1] == " ") || (oponentes.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1 && ((linha - 2) < 0 || (coluna + 2) > 7))) {
     return false;
   } else if (caracterAtual == "P" && oponentes.indexOf(tabuleiro[linha - 1][coluna + 1]) != -1 && (linha - 2) >= 0 && (coluna + 2) <= 7 && tabuleiro[linha - 2][coluna + 2] == " ") {
     jogadasPossiveis.push((linha - 2) + "-" + (coluna + 2));
@@ -227,7 +226,7 @@ function verificaInfEsquerdo(linha, coluna, caracterAtual) {
     oponentes = ["B", "DB"];
   }
 
-  if ((linha + 1) > 7 || (coluna - 1) < 0 || jogadorAtual.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1 || (caracterAtual == "B" && tabuleiro[linha + 1][coluna - 1] == " ")) {
+  if ((linha + 1) > 7 || (coluna - 1) < 0 || jogadorAtual.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1 || (caracterAtual == "B" && tabuleiro[linha + 1][coluna - 1] == " ") || (oponentes.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1 && ((linha + 2) > 7 || (coluna - 2) < 0))) {
     return false;
   } else if (caracterAtual == "B" && oponentes.indexOf(tabuleiro[linha + 1][coluna - 1]) != -1 && (linha + 2) <= 7 && (coluna - 2) >= 0 && tabuleiro[linha + 2][coluna - 2] == " ") {
     jogadasPossiveis.push((linha + 2) + "-" + (coluna - 2));
@@ -252,7 +251,7 @@ function verificaInfDireito(linha, coluna, caracterAtual) {
     oponentes = ["B", "DB"];
   }
 
-  if ((linha + 1) > 7 || (coluna + 1) > 7 || jogadorAtual.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1 || (caracterAtual == "B" && tabuleiro[linha + 1][coluna + 1] == " ")) {
+  if ((linha + 1) > 7 || (coluna + 1) > 7 || jogadorAtual.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1 || oponentes.indexOf(tabuleiro[linha][coluna]) != -1 && oponentes.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1 || (caracterAtual == "B" && tabuleiro[linha + 1][coluna + 1] == " ") || (oponentes.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1 && ((linha + 2) > 7 || (coluna + 2) > 7))) {
     return false;
   } else if (caracterAtual == "B" && oponentes.indexOf(tabuleiro[linha + 1][coluna + 1]) != -1 && (linha + 2) <= 7 && (coluna + 2) <= 7 && tabuleiro[linha + 2][coluna + 2] == " ") {
     jogadasPossiveis.push((linha + 2) + "-" + (coluna + 2));
@@ -367,7 +366,7 @@ function eliminarPeca(linhaDest, colunaDest, linhaOrig, colunaOrig, tabuleiro) {
         posicaoEliminar[1] = colunaDest + 1;
       }
       //Dama foi pra direita inferior
-    } else if (colunaOrig - colunaDest < - 2) {
+    } else if (colunaOrig - colunaDest < -2) {
       if (tabuleiro[linhaDest - 1][colunaDest - 1] === "B" || tabuleiro[linhaDest - 1][colunaDest - 1] === "DB") {
         totalPecasBrancas--;
         posicaoEliminar[0] = linhaDest - 1;
@@ -466,7 +465,7 @@ function verificaPecasAfogadas(jogadorAtual) {
         supDir = verificaSupDireito(i, j, tabuleiro[i][j]);
         infEsq = verificaInfEsquerdo(i, j, tabuleiro[i][j]);
         infDir = verificaInfDireito(i, j, tabuleiro[i][j]);
-
+        
         if (supEsq == false && supDir == false && infDir == false && infEsq == false) {
           afogadas++;
         }
@@ -478,10 +477,9 @@ function verificaPecasAfogadas(jogadorAtual) {
 
 //Função de desistência que é chamada caso o botão seja apertado
 function desistir() {
-  if (jogadorAtual[0] == "B") {
-    alert('As Pretas ganharam por desistência!');
-  } else {
-    alert('As Brancas ganharam por desistência!');
+  let giveup = confirm("Você tem certeza que deseja desistir?");
+
+  if (giveup) {
+    window.location.replace(`/giveup/${jogadorAtual[0]}`);
   }
-  document.getElementsByClassName('tabuleiro')[0].classList.add('naoClicavel');
 }
